@@ -7,6 +7,7 @@
   program-studi: "Ilmu Komputer",
   fakultas:      "Sekolah Sains Data Matematika dan Informatika",
   tahun:         "2026",
+  jenis-karya:   "laporan-akhir",
 )
 
 // ── Bagian Awal (nomor halaman Romawi: i, ii, iii, …) ──
@@ -31,16 +32,54 @@
 
 = PENDAHULUAN
 == Latar Belakang
-Teks paragraf dimulai di sini …
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et enim a ex faucibus ullamcorper sed nec est. Fusce vitae purus et mauris consequat porta. Mauris vitae maximus tortor. Donec gravida purus a quam eleifend, et laoreet tellus pellentesque. Donec diam metus, aliquam sit amet erat eget, placerat pellentesque ex. Aliquam tempus, tellus a eleifend porta, ex justo commodo tellus, id vulputate ipsum diam in augue. Sed in massa a est imperdiet malesuada. In hac habitasse platea dictumst. Nunc consectetur blandit erat non consequat. Vivamus ut nunc enim. Praesent sed vehicula ante. In fringilla ante luctus vulputate semper. Donec a. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et enim a ex faucibus ullamcorper sed nec est. Fusce vitae purus et mauris consequat porta. Mauris vitae maximus tortor. Donec gravida purus a quam eleifend, et laoreet tellus pellentesque. Donec diam metus, aliquam sit amet erat eget, placerat pellentesque ex. Aliquam tempus, tellus a eleifend porta, ex justo commodo tellus, id vulputate ipsum diam in augue. Sed in massa a est imperdiet malesuada. In hac habitasse platea dictumst. Nunc consectetur blandit erat non consequat. Vivamus ut nunc enim. Praesent sed vehicula ante. In fringilla ante luctus vulputate semper. Donec a. 
+
+== Rumusan Masalah
+
+1. Lorem ipsum dolor sit amet
+2. Lorem ipsum dolor sit amet
+3. Lorem ipsum dolor sit amet
 
 == Tujuan Penelitian
-...
+1. Lorem ipsum dolor sit amet
+2. Lorem ipsum dolor sit amet
+3. Lorem ipsum dolor sit amet
+
+== Manfaat
+1. Lorem ipsum dolor sit amet
+2. Lorem ipsum dolor sit amet
+3. Lorem ipsum dolor sit amet
+
+#pagebreak()
+
+== Ruang Lingkup
+1. Lorem ipsum dolor sit amet
+2. Lorem ipsum dolor sit amet
+3. Lorem ipsum dolor sit amet
+
 
 = TINJAUAN PUSTAKA
-...
+
+== Judul Subbab 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et enim a ex faucibus ullamcorper sed nec est. Fusce vitae purus et mauris consequat porta. Mauris vitae maximus tortor. Donec gravida purus a quam eleifend, et laoreet tellus pellentesque. Donec diam metus, aliquam sit amet erat eget, placerat pellentesque ex. Aliquam tempus, tellus a eleifend porta, ex justo commodo tellus, id vulputate ipsum diam in augue. Sed in massa a est imperdiet malesuada. In hac habitasse platea dictumst. Nunc consectetur blandit erat non consequat. Vivamus ut nunc enim. Praesent sed vehicula ante. In fringilla ante luctus vulputate semper. Donec a. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et enim a ex faucibus ullamcorper sed nec est. Fusce vitae purus et mauris consequat porta. Mauris vitae maximus tortor. Donec gravida purus a quam eleifend, et laoreet tellus pellentesque. Donec diam metus, aliquam sit amet erat eget, placerat pellentesque ex. Aliquam tempus, tellus a eleifend porta, ex justo commodo tellus, id vulputate ipsum diam in augue. Sed in massa a est imperdiet malesuada. In hac habitasse platea dictumst. Nunc consectetur blandit erat non consequat. Vivamus ut nunc enim. Praesent sed vehicula ante. In fringilla ante luctus vulputate semper. Donec a. 
+
+== Judul Subbab 2
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et enim a ex faucibus ullamcorper sed nec est. Fusce vitae purus et mauris consequat porta. Mauris vitae maximus tortor. Donec gravida purus a quam eleifend, et laoreet tellus pellentesque. Donec diam metus, aliquam sit amet erat eget, placerat pellentesque ex. Aliquam tempus, tellus a eleifend porta, ex justo commodo tellus, id vulputate ipsum diam in augue. Sed in massa a est imperdiet malesuada. In hac habitasse platea dictumst. Nunc consectetur blandit erat non consequat. Vivamus ut nunc enim. Praesent sed vehicula ante. In fringilla ante luctus vulputate semper. Donec a. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et enim a ex faucibus ullamcorper sed nec est. Fusce vitae purus et mauris consequat porta. Mauris vitae maximus tortor. Donec gravida purus a quam eleifend, et laoreet tellus pellentesque. Donec diam metus, aliquam sit amet erat eget, placerat pellentesque ex. Aliquam tempus, tellus a eleifend porta, ex justo commodo tellus, id vulputate ipsum diam in augue. Sed in massa a est imperdiet malesuada. In hac habitasse platea dictumst. Nunc consectetur blandit erat non consequat. Vivamus ut nunc enim. Praesent sed vehicula ante. In fringilla ante luctus vulputate semper. Donec a. 
 
 = METODE PENELITIAN
- ...
+
+== Waktu dan Tempat Penelitian
+== Alat dan Bahan
+== Prosedur Kerja
+== Analisis Data
 
 #daftar-pustaka[
   Satria A. 2015. Politik Kelautan dan Perikanan. Jakarta: Obor. \
