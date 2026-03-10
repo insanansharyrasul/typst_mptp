@@ -1,4 +1,4 @@
-# format_ppki.typst
+# format_ppki.typ
 
 Template [Typst](https://typst.app) untuk penulisan karya ilmiah tugas akhir mahasiswa IPB, sesuai **Pedoman Penulisan Karya Ilmiah (PPKI) Edisi ke-4** (IPB Press, Desember 2019).
 
@@ -21,7 +21,7 @@ Template [Typst](https://typst.app) untuk penulisan karya ilmiah tugas akhir mah
 
 ```
 proyek-skripsi/
-├── format_ppki.typst   ← salin file ini
+├── format_ppki.typ   ← salin file ini
 ├── skripsi.typ         ← file utama Anda
 └── logo-ipb.png        ← opsional
 ```
@@ -61,7 +61,7 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 ### Contoh Lengkap
 
 ```typst
-#import "format_ppki.typst": *
+#import "format_ppki.typ": *
 
 #show: ppki.with(
   judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
@@ -214,7 +214,7 @@ Template ini menggunakan Typst's built-in `bibliography()` dengan file BibTeX (`
 
 ```
 proyek-skripsi/
-├── format_ppki.typst
+├── format_ppki.typ
 ├── skripsi.typ
 ├── reference.bib   ← data referensi
 └── ipb.csl         ← gaya sitasi IPB

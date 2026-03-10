@@ -90,17 +90,17 @@
 // ─── Konstanta ───────────────────────────────────────────────
 
 // Jenis huruf utama (PPKI Lampiran 16: Times New Roman)
-#let _font     = "Times New Roman"
+#let _font = "Times New Roman"
 
 // Ukuran huruf teks biasa: 12pt (PPKI Lampiran 16)
-#let _sz-body  = 12pt
+#let _sz-body = 12pt
 
 // Ukuran huruf judul bab: 14pt (PPKI Lampiran 16)
-#let _sz-bab   = 14pt
+#let _sz-bab = 14pt
 
 // Jarak antarbaris (1 spasi). Nilai 0.65em adalah setara
 // dengan "single spacing" pada Typst untuk teks 12pt.
-#let _leading  = 0.65em
+#let _leading = 0.65em
 
 
 // ─── Penomoran Halaman ────────────────────────────────────────
@@ -141,30 +141,29 @@
 ///   fakultas       - Nama fakultas/sekolah
 ///   tahun          - Tahun lulus (string, mis. "2024")
 #let ppki(
-  judul:          "",
-  nama-penulis:   "",
-  nim:            "",
-  jenis-karya:    "skripsi",
-  program-studi:  "",
-  departemen:     "",
-  fakultas:       "",
-  tahun:          "",
+  judul: "",
+  nama-penulis: "",
+  nim: "",
+  jenis-karya: "skripsi",
+  program-studi: "",
+  departemen: "",
+  fakultas: "",
+  tahun: "",
   body,
 ) = {
-
   // ── Kertas & Pias (Margin) ────────────────────────────────
   // A4: 21,0 cm × 29,7 cm  (PPKI Lampiran 16: Bahan dan Ukuran Kertas)
   // Pias kiri 4 cm, kanan 3 cm, atas 3 cm, bawah 3 cm (PPKI Lampiran 16 butir 2)
   set page(
-    paper:        "a4",
+    paper: "a4",
     margin: (
-      left:   4cm,
-      right:  3cm,
-      top:    3cm,
+      left: 4cm,
+      right: 3cm,
+      top: 3cm,
       bottom: 3cm,
     ),
     // Nomor halaman di pojok atas kanan (PPKI Lampiran 16 butir 3)
-    numbering:    "1",
+    numbering: "1",
     number-align: top + right,
   )
 
@@ -182,10 +181,10 @@
   // • Rata kanan-kiri / justified (butir 6)
   // • Tidak ada spasi ekstra antarparagraf
   set par(
-    leading:           _leading,
-    spacing:           _leading,
+    leading: _leading,
+    spacing: _leading,
     first-line-indent: 1cm,
-    justify:           true,
+    justify: true,
   )
 
   // ── Penomoran Heading ─────────────────────────────────────
@@ -283,7 +282,7 @@
   //     ),
   //   )
   show figure.where(kind: table): set figure.caption(position: top)
-  set table(stroke: none)  // garis diatur manual dengan table.hline()
+  set table(stroke: none) // garis diatur manual dengan table.hline()
 
   // ── Gambar ───────────────────────────────────────────────
   // • Caption/judul gambar di BAWAH gambar (PPKI Bab VI butir 6.2)
@@ -320,23 +319,23 @@
 ///   ±18 cm dari atas kertas → logo
 ///   ±23,7 cm dari atas kertas → nama departemen/fakultas/institusi
 #let halaman-sampul(
-  judul:         "",
-  nama:          "",
-  nim:           "",
+  judul: "",
+  nama: "",
+  nim: "",
   program-studi: "",
-  departemen:    "",
-  fakultas:      "",
-  institusi:     "INSTITUT PERTANIAN BOGOR",
-  kota:          "BOGOR",
-  tahun:         "",
-  logo:          none,
+  departemen: "",
+  fakultas: "",
+  institusi: "INSTITUT PERTANIAN BOGOR",
+  kota: "BOGOR",
+  tahun: "",
+  logo: none,
 ) = {
   set page(
-    paper:     "a4",
-    margin:    (left: 4cm, right: 3cm, top: 0pt, bottom: 0pt),
+    paper: "a4",
+    margin: (left: 4cm, right: 3cm, top: 0pt, bottom: 0pt),
     numbering: none,
-    header:    none,
-    footer:    none,
+    header: none,
+    footer: none,
   )
   set text(font: _font, size: _sz-bab)
   set par(leading: _leading, first-line-indent: 0pt, justify: false)
@@ -377,12 +376,18 @@
   // Times New Roman 14pt (PPKI Lampiran 1b)
   let dept-line = if departemen != "" { "\n" + upper(departemen) } else { "" }
   text(weight: "bold")[
-    #(upper(program-studi)
-      + dept-line
-      + "\n" + upper(fakultas)
-      + "\n" + upper(institusi)
-      + "\n" + upper(kota)
-      + "\n" + tahun)
+    #(
+      upper(program-studi)
+        + dept-line
+        + "\n"
+        + upper(fakultas)
+        + "\n"
+        + upper(institusi)
+        + "\n"
+        + upper(kota)
+        + "\n"
+        + tahun
+    )
   ]
 
   v(3cm)
@@ -405,11 +410,11 @@
 ///   jenis-karya - "laporan akhir" | "skripsi" | "tesis" | "disertasi"
 ///   tanggal     - Tempat dan tanggal tanda tangan, mis. "Bogor, Januari 2024"
 #let halaman-pernyataan(
-  nama:        "",
-  nim:         "",
-  judul:       "",
+  nama: "",
+  nim: "",
+  judul: "",
   jenis-karya: "skripsi",
-  tanggal:     "",
+  tanggal: "",
 ) = {
   set par(first-line-indent: 0pt, justify: true, leading: _leading, spacing: _leading)
   set text(font: _font, size: _sz-body)
@@ -463,17 +468,17 @@
 /// Catatan: Ditulis 1 spasi, tidak ada before dan after (PPKI Lampiran 4b).
 /// Halaman ini diberi nomor i tetapi nomor tidak dicetak.
 #let abstrak(
-  nama:       "",
-  judul:      "",
+  nama: "",
+  judul: "",
   pembimbing: (),
-  isi:        [],
+  isi: [],
   kata-kunci: "",
 ) = {
   set par(
-    leading:           _leading,
-    spacing:           _leading,
+    leading: _leading,
+    spacing: _leading,
     first-line-indent: 0pt,
-    justify:           true,
+    justify: true,
   )
   set text(font: _font, size: _sz-body)
 
@@ -515,17 +520,17 @@
 ///   isi         - Narasi abstrak (maks. 200 kata, 1 paragraf)
 ///   keywords    - Keywords dipisah koma, alphabetical order, maks. 5
 #let abstract-en(
-  nama:       "",
-  judul:      "",
+  nama: "",
+  judul: "",
   pembimbing: (),
-  isi:        [],
-  keywords:   "",
+  isi: [],
+  keywords: "",
 ) = {
   set par(
-    leading:           _leading,
-    spacing:           _leading,
+    leading: _leading,
+    spacing: _leading,
     first-line-indent: 0pt,
-    justify:           true,
+    justify: true,
   )
   set text(font: _font, size: _sz-body)
 
@@ -561,10 +566,10 @@
 ///
 /// Parameter sama dengan abstrak().
 #let ringkasan(
-  nama:       "",
-  judul:      "",
+  nama: "",
+  judul: "",
   pembimbing: (),
-  isi:        [],
+  isi: [],
   kata-kunci: "",
 ) = {
   set par(leading: _leading, spacing: _leading, first-line-indent: 0pt, justify: true)
@@ -595,11 +600,11 @@
 /// Tidak lebih dari 2 halaman, ditulis 1 spasi dalam beberapa paragraf.
 /// Referensi: Lampiran 5e PPKI.
 #let summary(
-  nama:       "",
-  judul:      "",
+  nama: "",
+  judul: "",
   pembimbing: (),
-  isi:        [],
-  keywords:   "",
+  isi: [],
+  keywords: "",
 ) = {
   set par(leading: _leading, spacing: _leading, first-line-indent: 0pt, justify: true)
   set text(font: _font, size: _sz-body)
@@ -638,7 +643,7 @@
   ]
   v(2 * _leading)
   outline(
-    title:  none,
+    title: none,
     indent: 1cm,
   )
 }
@@ -653,7 +658,7 @@
   ]
   v(2 * _leading)
   outline(
-    title:  none,
+    title: none,
     target: figure.where(kind: table),
   )
 }
@@ -668,7 +673,7 @@
   ]
   v(2 * _leading)
   outline(
-    title:  none,
+    title: none,
     target: figure.where(kind: image),
   )
 }
@@ -683,7 +688,7 @@
   v(2 * _leading)
   // Lampiran dibuat sebagai figure dengan kind: "lampiran"
   outline(
-    title:  none,
+    title: none,
     target: figure.where(kind: "lampiran"),
   )
 }
@@ -733,10 +738,10 @@
   counter(heading).update((ch, ..rest) => (ch - 1,))
   set par(
     first-line-indent: 0pt,
-    hanging-indent:    1cm,    // setiap entri: baris kedua dst. menjorok 1 cm
-    leading:           _leading,
-    spacing:           _leading,
-    justify:           true,
+    hanging-indent: 1cm, // setiap entri: baris kedua dst. menjorok 1 cm
+    leading: _leading,
+    spacing: _leading,
+    justify: true,
   )
   bibliography(bibfile, title: none, style: style)
 }

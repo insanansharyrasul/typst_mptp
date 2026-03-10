@@ -1,26 +1,26 @@
 #import "format_ppki.typ": *
 
 #show: ppki.with(
-  judul:         "Judul Karya Ilmiah Anda",
-  nama-penulis:  "Insan Anshary Rasul",
-  nim:           "G6401231132",
+  judul: "Judul Karya Ilmiah Anda",
+  nama-penulis: "Insan Anshary Rasul",
+  nim: "G6401231132",
   program-studi: "Ilmu Komputer",
-  fakultas:      "Sekolah Sains Data Matematika dan Informatika",
-  tahun:         "2026",
-  jenis-karya:   "laporan-akhir",
+  fakultas: "Sekolah Sains Data Matematika dan Informatika",
+  tahun: "2026",
+  jenis-karya: "laporan-akhir",
 )
 
 // ── Bagian Awal (nomor halaman Romawi: i, ii, iii, …) ──
 #show: bagian-awal
 
 #halaman-sampul(
-  judul:         "analisis performa aplikasi flutter dengan menggunakan foreign function interface bahasa c",
-  nama:          "INSAN ANSHARY RASUL",
-  nim:           "G6401231132",
+  judul: "analisis performa aplikasi flutter dengan menggunakan foreign function interface bahasa c",
+  nama: "INSAN ANSHARY RASUL",
+  nim: "G6401231132",
   program-studi: "ILMU KOMPUTER",
-  fakultas:      "Sekolah Sains Data Matematika dan Informatika",
-  tahun:         "2026",
-  logo:          image("logo-ipb.png", width: 2.5cm), 
+  fakultas: "Sekolah Sains Data Matematika dan Informatika",
+  tahun: "2026",
+  logo: image("logo-ipb.png", width: 2.5cm),
 )
 
 #daftar-isi()
@@ -67,13 +67,13 @@
 
 #lorem(100)
 
-#lorem(100) @smith2020novel 
+#lorem(100) @smith2020novel
 
 == Judul Subbab 2
 
 #lorem(100)
 
-#lorem(80) 
+#lorem(80)
 
 = METODE PENELITIAN
 
