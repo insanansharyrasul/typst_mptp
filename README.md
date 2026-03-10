@@ -21,15 +21,19 @@ Template [Typst](https://typst.app) untuk penulisan karya ilmiah tugas akhir mah
 
 ```
 proyek-skripsi/
-├── format_ppki.typ   ← salin file ini
-├── skripsi.typ         ← file utama Anda
-└── logo-ipb.png        ← opsional
+├── lib/
+│   ├── format_ppki.typ   ← salin file ini
+│   └── ipb.csl           ← salin file ini
+├── assets/               ← untuk gambar/logo
+├── reference/
+│   └── reference.bib     ← data referensi
+└── main.typ              ← file utama Anda
 ```
 
 ### 2. Impor di file utama
 
 ```typst
-#import "format_ppki.typst": *
+#import "lib/format_ppki.typ": *
 ```
 
 ### 3. Aktifkan format PPKI
@@ -61,7 +65,7 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 ### Contoh Lengkap
 
 ```typst
-#import "format_ppki.typ": *
+#import "lib/format_ppki.typ": *
 
 #show: ppki.with(
   judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
@@ -85,7 +89,7 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
   departemen:    "Agronomi dan Hortikultura",
   fakultas:      "Fakultas Pertanian",
   tahun:         "2024",
-  logo:          image("logo-ipb.png", height: 2.5cm),  // hapus jika tidak ada logo
+  logo:          image("assets/logo-ipb.png", height: 2.5cm),  // hapus jika tidak ada logo
 )
 
 #halaman-pernyataan(
@@ -162,7 +166,7 @@ Paragraf pertama dimulai di sini …
 
 ...
 
-#daftar-pustaka("reference.bib", style: "ipb.csl")
+#daftar-pustaka("../reference/reference.bib", style: "ipb.csl")
 
 #lampiran[
   // Konten lampiran di sini
@@ -214,10 +218,13 @@ Template ini menggunakan Typst's built-in `bibliography()` dengan file BibTeX (`
 
 ```
 proyek-skripsi/
-├── format_ppki.typ
-├── skripsi.typ
-├── reference.bib   ← data referensi
-└── ipb.csl         ← gaya sitasi IPB
+├── lib/
+│   ├── format_ppki.typ
+│   └── ipb.csl           ← gaya sitasi IPB
+├── assets/
+├── reference/
+│   └── reference.bib     ← data referensi
+└── main.typ
 ```
 
 ### Menambahkan referensi ke `reference.bib`
@@ -258,7 +265,7 @@ Hasil penelitian sebelumnya menunjukkan peningkatan hasil panen @smith2020.
 ### Memanggil daftar pustaka
 
 ```typst
-#daftar-pustaka("reference.bib", style: "ipb.csl")
+#daftar-pustaka("../reference/reference.bib", style: "ipb.csl")
 ```
 
 Hanya referensi yang disitasi dalam teks yang akan muncul di daftar pustaka.
@@ -274,7 +281,7 @@ Jika kamu sudah familiar dengan [Zotero](https://www.zotero.org), kamu bisa mema
    - Klik kanan koleksi → *Export Collection…*
    - Pilih format **Better BibTeX** (atau **BibTeX** jika tidak menginstal ekstensi)
    - Centang **Keep updated** agar file `.bib` otomatis diperbarui setiap ada perubahan
-   - Simpan sebagai `reference.bib` di direktori proyek
+   - Simpan sebagai `reference.bib` di direktori `reference/`
 5. **Gunakan kunci sitasi** yang dihasilkan Zotero (misalnya `satria2015`) langsung di Typst dengan `@satria2015`.
 
 > **Tip:** Dengan fitur *Keep updated*, kamu cukup menambah referensi di Zotero dan file `reference.bib` akan ikut diperbarui secara otomatis — tidak perlu ekspor ulang secara manual.
@@ -378,10 +385,10 @@ b) Poin kedua
 ## Kompilasi
 
 ```bash
-typst compile skripsi.typ skripsi.pdf
+typst compile main.typ skripsi.pdf
 
 # Mode watch (auto-compile saat file berubah)
-typst watch skripsi.typ skripsi.pdf
+typst watch main.typ skripsi.pdf
 ```
 
 ---

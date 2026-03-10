@@ -1,4 +1,4 @@
-#import "format_ppki.typ": *
+#import "lib/format_ppki.typ": *
 
 #show: ppki.with(
   judul: "Judul Karya Ilmiah Anda",
@@ -82,7 +82,7 @@
 == Prosedur Kerja
 == Analisis Data
 
-#daftar-pustaka("reference.bib", style: "ipb.csl")
+#daftar-pustaka("../reference/reference.bib", style: "ipb.csl")
 
 #lampiran[
 ]
