@@ -699,15 +699,14 @@
 ///   • Urutan: Penulis. Tahun. Judul. Kota: Penerbit.
 ///   • Format "hanging indent" 1 cm (baris pertama rata kiri, baris selanjutnya
 ///     menjorok ke dalam)
-///   • Gunakan "\\" (newline) untuk memisahkan entri, ATAU
-///     pisahkan dengan baris kosong
+///
+/// Parameter:
+///   bibfile - Path ke file .bib (mis. "reference.bib")
+///   style   - Path ke file .csl atau nama style bawaan (mis. "ipb.csl")
 ///
 /// Contoh:
-///   #daftar-pustaka[
-///     Satria A. 2015. Politik Kelautan. Jakarta: Obor. \
-///     Smith J, Doe A. 2020. Judul. J Sains. 10(2):1−10.
-///   ]
-#let daftar-pustaka(isi) = {
+///   #daftar-pustaka("reference.bib", style: "ipb.csl")
+#let daftar-pustaka(bibfile, style: "ipb.csl") = {
   pagebreak(weak: true)
   // Heading level 1 tanpa nomor bab, tetap masuk outline (Daftar Isi)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR PUSTAKA]
@@ -720,7 +719,7 @@
     spacing:           _leading,
     justify:           true,
   )
-  isi
+  bibliography(bibfile, title: none, style: style)
 }
 
 

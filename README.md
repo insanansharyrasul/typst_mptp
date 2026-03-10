@@ -162,11 +162,7 @@ Paragraf pertama dimulai di sini …
 
 ...
 
-#daftar-pustaka[
-  Satria A. 2015. Politik Kelautan dan Perikanan. Jakarta: Obor.
-  
-  Smith J, Doe A. 2020. Organic fertilizer effect on rice yield. J Crop Sci. 10(2):1−10. doi:10.1000/xyz.
-]
+#daftar-pustaka("reference.bib", style: "ipb.csl")
 
 #lampiran[
   // Konten lampiran di sini
@@ -197,7 +193,7 @@ Paragraf pertama dimulai di sini …
 | `#daftar-tabel()`          | Daftar tabel otomatis           | Lampiran 12      |
 | `#daftar-gambar()`         | Daftar gambar otomatis          | Lampiran 12      |
 | `#daftar-lampiran()`       | Daftar lampiran otomatis        | Lampiran 12      |
-| `#daftar-pustaka[...]`     | Daftar pustaka                  | Bab VII          |
+| `#daftar-pustaka(...)`     | Daftar pustaka                  | Bab VII          |
 | `#lampiran[...]`           | Halaman lampiran                | Bab III 3.3.1    |
 | `#riwayat-hidup[...]`      | Riwayat hidup                   | Lampiran 14a–14b |
 
@@ -207,6 +203,81 @@ Paragraf pertama dimulai di sini …
 | -------------------- | -------------------------------------------------------- |
 | `#show: bagian-awal` | Nomor halaman Romawi: i, ii, iii, … (mulai ulang dari i) |
 | `#show: bagian-isi`  | Nomor halaman Arab: 1, 2, 3, … (mulai ulang dari 1)      |
+
+---
+
+## Daftar Pustaka dan Sitasi
+
+Template ini menggunakan Typst's built-in `bibliography()` dengan file BibTeX (`.bib`) dan format sitasi CSL (`.csl`).
+
+### Struktur file
+
+```
+proyek-skripsi/
+├── format_ppki.typst
+├── skripsi.typ
+├── reference.bib   ← data referensi
+└── ipb.csl         ← gaya sitasi IPB
+```
+
+### Menambahkan referensi ke `reference.bib`
+
+File `.bib` menggunakan format BibTeX. Contoh entri:
+
+```bibtex
+@book{satria2015,
+  author    = {Satria, Arif},
+  title     = {Politik Kelautan dan Perikanan},
+  year      = {2015},
+  publisher = {Obor},
+  address   = {Jakarta},
+}
+
+@article{smith2020,
+  author  = {Smith, John and Doe, Alice},
+  title   = {Organic fertilizer effect on rice yield},
+  journal = {Journal of Crop Science},
+  year    = {2020},
+  volume  = {10},
+  number  = {2},
+  pages   = {1--10},
+  doi     = {10.1000/xyz},
+}
+```
+
+### Sitasi dalam teks
+
+Gunakan `@key` untuk menyitir referensi, di mana `key` adalah kunci entri BibTeX:
+
+```typst
+Menurut @satria2015, pengelolaan sumber daya kelautan …
+
+Hasil penelitian sebelumnya menunjukkan peningkatan hasil panen @smith2020.
+```
+
+### Memanggil daftar pustaka
+
+```typst
+#daftar-pustaka("reference.bib", style: "ipb.csl")
+```
+
+Hanya referensi yang disitasi dalam teks yang akan muncul di daftar pustaka.
+
+### Menggunakan Zotero (direkomendasikan)
+
+Jika kamu sudah familiar dengan [Zotero](https://www.zotero.org), kamu bisa memanfaatkannya untuk mengelola referensi dan mengekspor ke format BibTeX secara otomatis:
+
+1. **Instal Zotero** dari [zotero.org](https://www.zotero.org/download/).
+2. **Instal ekstensi Better BibTeX for Zotero** dari [retorque.re/zotero-better-bibtex](https://retorque.re/zotero-better-bibtex/installation/) — ekstensi ini menghasilkan kunci sitasi yang konsisten dan rapi.
+3. **Tambahkan referensi** ke library Zotero (bisa drag-and-drop PDF, import DOI, atau tambah manual).
+4. **Ekspor ke BibTeX**:
+   - Klik kanan koleksi → *Export Collection…*
+   - Pilih format **Better BibTeX** (atau **BibTeX** jika tidak menginstal ekstensi)
+   - Centang **Keep updated** agar file `.bib` otomatis diperbarui setiap ada perubahan
+   - Simpan sebagai `reference.bib` di direktori proyek
+5. **Gunakan kunci sitasi** yang dihasilkan Zotero (misalnya `satria2015`) langsung di Typst dengan `@satria2015`.
+
+> **Tip:** Dengan fitur *Keep updated*, kamu cukup menambah referensi di Zotero dan file `reference.bib` akan ikut diperbarui secara otomatis — tidak perlu ekspor ulang secara manual.
 
 ---
 
