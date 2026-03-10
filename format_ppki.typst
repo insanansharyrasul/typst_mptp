@@ -706,6 +706,25 @@
 ///
 /// Contoh:
 ///   #daftar-pustaka("reference.bib", style: "ipb.csl")
+
+// Penulisan daftar pustaka manual
+// #let daftar-pustaka(isi) = {
+//   pagebreak(weak: true)
+//   // Heading level 1 tanpa nomor bab, tetap masuk outline (Daftar Isi)
+//   heading(level: 1, numbering: none, outlined: true)[DAFTAR PUSTAKA]
+//   // Reset counter agar bab berikutnya tidak terganggu
+//   counter(heading).update((ch, ..rest) => (ch - 1,))
+//   set par(
+//     first-line-indent: 0pt,
+//     hanging-indent:    1cm,    // setiap entri: baris kedua dst. menjorok 1 cm
+//     leading:           _leading,
+//     spacing:           _leading,
+//     justify:           true,
+//   )
+//   isi
+// }
+
+// Penulisan daftar pustaka dengan BetterBibTex
 #let daftar-pustaka(bibfile, style: "ipb.csl") = {
   pagebreak(weak: true)
   // Heading level 1 tanpa nomor bab, tetap masuk outline (Daftar Isi)
