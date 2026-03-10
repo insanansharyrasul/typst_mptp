@@ -20,7 +20,7 @@
   program-studi: "ILMU KOMPUTER",
   fakultas: "Sekolah Sains Data Matematika dan Informatika",
   tahun: "2026",
-  logo: image("logo-ipb.png", width: 2.5cm),
+  logo: image("assets/logo-ipb.png", width: 2.5cm),
 )
 
 #daftar-isi()

@@ -395,4 +395,6 @@ typst watch main.typ skripsi.pdf
 
 ## Lisensi
 
-Template ini bebas digunakan dan dimodifikasi untuk keperluan akademik.
+Template ini dilisensikan di bawah [GNU General Public License v3.0](LICENSE).
+
+Kamu bebas menggunakan, menyalin, memodifikasi, dan mendistribusikan template ini, dengan syarat bahwa setiap karya turunan juga didistribusikan di bawah lisensi yang sama (GPLv3). Lihat file [LICENSE](LICENSE) untuk detail lengkap.
