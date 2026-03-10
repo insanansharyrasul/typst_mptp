@@ -1,4 +1,4 @@
-#import "format_ppki.typst": *
+#import "format_ppki.typ": *
 
 #show: ppki.with(
   judul:         "Judul Karya Ilmiah Anda",
