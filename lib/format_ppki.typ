@@ -105,12 +105,30 @@
 
 // ─── Penomoran Halaman ────────────────────────────────────────
 
+// Header mirror: nomor halaman di pojok kanan atas untuk halaman ganjil
+// dan pojok kiri atas untuk halaman genap. Posisi: 2 cm dari atas kertas,
+// 3 cm dari tepi kanan/kiri (PPKI Lampiran 16 butir 3, versi mirror).
+#let _header-mirror(fmt) = context {
+  let n = counter(page).get().first()
+  let s = numbering(fmt, n)
+  set text(font: _font, size: _sz-body)
+  if calc.odd(n) {
+    align(right, s)
+  } else {
+    align(left, s)
+  }
+}
+
 /// Aktifkan penomoran halaman Romawi kecil (i, ii, iii, …).
 /// Digunakan untuk bagian awal (abstrak s.d. daftar lampiran).
 ///
 /// Gunakan: #show: bagian-awal
 #let bagian-awal(body) = {
-  set page(numbering: "i", number-align: top + right)
+  set page(
+    numbering: none,
+    header: _header-mirror("i"),
+    header-ascent: 1cm,
+  )
   counter(page).update(1)
   body
 }
@@ -120,7 +138,11 @@
 ///
 /// Gunakan: #show: bagian-isi
 #let bagian-isi(body) = {
-  set page(numbering: "1", number-align: top + right)
+  set page(
+    numbering: none,
+    header: _header-mirror("1"),
+    header-ascent: 1cm,
+  )
   counter(page).update(1)
   body
 }
@@ -153,18 +175,18 @@
 ) = {
   // ── Kertas & Pias (Margin) ────────────────────────────────
   // A4: 21,0 cm × 29,7 cm  (PPKI Lampiran 16: Bahan dan Ukuran Kertas)
-  // Pias kiri 4 cm, kanan 3 cm, atas 3 cm, bawah 3 cm (PPKI Lampiran 16 butir 2)
+  // Pias dalam (inside) 4 cm, luar (outside) 3 cm — mirror/selang-seling
+  // mengikuti sisi jilid. Atas 3 cm, bawah 3 cm (PPKI Lampiran 16 butir 2).
   set page(
     paper: "a4",
     margin: (
-      left: 4cm,
-      right: 3cm,
+      inside: 4cm,
+      outside: 3cm,
       top: 3cm,
       bottom: 3cm,
     ),
-    // Nomor halaman di pojok atas kanan (PPKI Lampiran 16 butir 3)
-    numbering: "1",
-    number-align: top + right,
+    binding: left,
+    numbering: none,
   )
 
   // ── Jenis & Ukuran Huruf ─────────────────────────────────
