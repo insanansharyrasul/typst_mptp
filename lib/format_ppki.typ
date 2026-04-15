@@ -420,6 +420,126 @@
 #let halaman-judul = halaman-sampul
 
 
+// ─── Halaman Penguji Luar Komisi & Lembar Pengesahan ────────
+
+/// Halaman penguji luar komisi. Diletakkan pada halaman GENAP sehingga
+/// berhadapan (saling tatap) dengan lembar pengesahan di halaman gasal
+/// berikutnya pada cetak bolak-balik. (PPKI Lampiran 16 butir 4).
+///
+/// Panggil SEBELUM #lembar-pengesahan(...) agar urutannya benar:
+///   halaman genap (penguji) di kiri, halaman gasal (pengesahan) di kanan.
+#let halaman-penguji(
+  nama-penguji: "",
+  jabatan: "Penguji Luar Komisi",
+) = {
+  pagebreak(to: "even", weak: true)
+  set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
+  set text(font: _font, size: _sz-body)
+  align(center)[
+    #text(size: _sz-bab, weight: "bold")[#upper(jabatan)]
+    #v(2 * _leading)
+    #nama-penguji
+  ]
+}
+
+/// Lembar pengesahan. Dipaksa mulai pada halaman GASAL sehingga berhadapan
+/// dengan halaman penguji luar komisi (halaman genap) pada cetak bolak-balik.
+/// (PPKI Lampiran 16 butir 4, Lampiran 2).
+///
+/// Parameter:
+///   judul       - Judul karya ilmiah
+///   nama        - Nama penulis
+///   nim         - NIM
+///   jenis-karya - "skripsi" | "tesis" | "disertasi" | "laporan akhir"
+///   program-studi
+///   pembimbing  - Array nama pembimbing, mis. ("Dr A", "Dr B")
+///   ketua-dep   - Nama ketua departemen
+///   dekan       - Nama dekan (opsional, untuk tesis/disertasi)
+///   tanggal-ujian
+///   tanggal-lulus
+#let lembar-pengesahan(
+  judul: "",
+  nama: "",
+  nim: "",
+  jenis-karya: "skripsi",
+  program-studi: "",
+  pembimbing: (),
+  ketua-dep: "",
+  dekan: "",
+  tanggal-ujian: "",
+  tanggal-lulus: "",
+) = {
+  pagebreak(to: "odd", weak: true)
+  set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: false)
+  set text(font: _font, size: _sz-body)
+
+  align(center)[
+    Judul #jenis-karya : #judul \
+    Nama : #nama \
+    NIM : #nim \
+    Program Studi : #program-studi
+  ]
+
+  v(2em)
+
+  align(center)[Disetujui oleh]
+
+  v(_leading)
+
+  // Pembimbing (1 atau 2 orang)
+  for (i, p) in pembimbing.enumerate() {
+    align(center)[
+      Pembimbing #if pembimbing.len() > 1 [#(i + 1)]: \
+      #v(3em)
+      #p
+    ]
+    v(_leading)
+  }
+
+  v(_leading)
+
+  align(center)[
+    Diketahui oleh \
+    Ketua Departemen/Program Studi: \
+    #v(3em)
+    #ketua-dep
+  ]
+
+  if dekan != "" {
+    v(_leading)
+    align(center)[
+      Dekan: \
+      #v(3em)
+      #dekan
+    ]
+  }
+
+  v(2em)
+
+  align(center)[
+    Tanggal ujian: #tanggal-ujian \
+    Tanggal lulus: #tanggal-lulus
+  ]
+}
+
+
+// ─── Paragraf Bertingkat ─────────────────────────────────────
+
+/// Membungkus konten sebagai paragraf bertingkat yang menjorok 0,5 cm
+/// dari paragraf di atasnya (PPKI Lampiran 16 butir 7). Dapat disarangkan;
+/// setiap tingkat menambah indentasi 0,5 cm dari tingkat sebelumnya.
+///
+/// Contoh:
+///   Paragraf utama di sini.
+///   #bertingkat[
+///     Paragraf tingkat 1 (menjorok 0,5 cm).
+///     #bertingkat[
+///       Paragraf tingkat 2 (menjorok 1 cm total).
+///     ]
+///   ]
+#let bertingkat(body) = pad(left: 0.5cm, body)
+
+
 // ─── Halaman Pernyataan dan Pelimpahan Hak Cipta ─────────────
 
 /// Membuat halaman pernyataan keaslian dan pelimpahan hak cipta.
