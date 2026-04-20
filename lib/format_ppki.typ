@@ -98,6 +98,11 @@
 // Ukuran huruf judul bab: 14pt (PPKI Lampiran 16)
 #let _sz-bab = 14pt
 
+// Jenis & ukuran huruf untuk tampilan hasil komputer
+// (PPKI Lampiran 16: Courier New 11pt)
+#let _font-mono = "Courier New"
+#let _sz-mono = 11pt
+
 // Jarak antarbaris (1 spasi). Nilai 0.65em adalah setara
 // dengan "single spacing" pada Typst untuk teks 12pt.
 #let _leading = 0.65em
@@ -196,6 +201,10 @@
     size: _sz-body,
     lang: "id",
   )
+
+  // Tampilan hasil komputer (kode, nama berkas, perintah) menggunakan
+  // Courier New 11pt (PPKI Lampiran 16).
+  show raw: set text(font: _font-mono, size: _sz-mono)
 
   // ── Paragraf ─────────────────────────────────────────────
   // • Jarak baris: 1 spasi (PPKI Lampiran 16 butir 5)
