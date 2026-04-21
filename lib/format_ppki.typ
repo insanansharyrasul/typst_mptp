@@ -171,8 +171,7 @@
   set page(
     numbering: "i",
     footer: none,
-    header: _header-mirror("i"),
-    header-ascent: 1cm,
+    header: none,
   )
   counter(page).update(1)
   body

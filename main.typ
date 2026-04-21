@@ -230,11 +230,11 @@ Isi subbab tinjauan pustaka.
     table.hline(stroke: 0.75pt),
     table.cell(colspan: 4, align: center)[Kekerasan buah (mm 50 g#super[-1] detik #super[-1])#super[a]],
     [Suhu Simpan], [], [], [],
-    [#h(1em)15ºC],  [9.20a],  [13.40a], [11.83a],
-    [#h(1em)28ºC],  [10.64a], [11.22a], [80.43b],
+    [#h(1em)15ºC], [9.20a], [13.40a], [11.83a],
+    [#h(1em)28ºC], [10.64a], [11.22a], [80.43b],
     [Putresina], [], [], [],
     [#h(1em)Dengan putresina], [12.07a], [13.23a], [11.19a],
-    [#h(1em)Tanpa putresina],  [10.76a], [14.41a], [41.12b],
+    [#h(1em)Tanpa putresina], [10.76a], [14.41a], [41.12b],
     table.hline(stroke: 0.75pt),
     table.cell(colspan: 4)[
       #set text(size: 10pt)
@@ -356,8 +356,8 @@ perbaikan asumsi yang diambil sehingga didapatkan hasil yang lebih baik.
       [856], [115], [3.10], [5],
       [605], [106], [3.09], [5],
       [400], [100], [2.47], [4],
-      [210], [93],  [2.46], [4],
-      [10],  [88],  [2.12], [4],
+      [210], [93], [2.46], [4],
+      [10], [88], [2.12], [4],
       table.hline(stroke: 0.75pt),
     )
   ]
