@@ -130,7 +130,8 @@
 /// Gunakan: #show: bagian-awal
 #let bagian-awal(body) = {
   set page(
-    numbering: none,
+    numbering: "i",
+    footer: none,
     header: _header-mirror("i"),
     header-ascent: 1cm,
   )
@@ -144,7 +145,8 @@
 /// Gunakan: #show: bagian-isi
 #let bagian-isi(body) = {
   set page(
-    numbering: none,
+    numbering: "1",
+    footer: none,
     header: _header-mirror("1"),
     header-ascent: 1cm,
   )
@@ -802,12 +804,9 @@
 /// Membuat halaman Daftar Tabel otomatis.
 /// Tampilkan jika jumlah tabel > 1 (PPKI Bab III 3.1.12).
 #let daftar-tabel() = {
-  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
-  align(center)[
-    #text(font: _font, size: _sz-bab, weight: "bold")[DAFTAR TABEL]
-  ]
-  v(2 * _leading)
+  heading(level: 1, numbering: none, outlined: true)[DAFTAR TABEL]
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   outline(
     title: none,
     target: figure.where(kind: table),
@@ -817,12 +816,9 @@
 /// Membuat halaman Daftar Gambar otomatis.
 /// Tampilkan jika jumlah gambar > 1 (PPKI Bab III 3.1.12).
 #let daftar-gambar() = {
-  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
-  align(center)[
-    #text(font: _font, size: _sz-bab, weight: "bold")[DAFTAR GAMBAR]
-  ]
-  v(2 * _leading)
+  heading(level: 1, numbering: none, outlined: true)[DAFTAR GAMBAR]
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   outline(
     title: none,
     target: figure.where(kind: image),
@@ -831,12 +827,9 @@
 
 /// Membuat halaman Daftar Lampiran otomatis (opsional).
 #let daftar-lampiran() = {
-  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
-  align(center)[
-    #text(font: _font, size: _sz-bab, weight: "bold")[DAFTAR LAMPIRAN]
-  ]
-  v(2 * _leading)
+  heading(level: 1, numbering: none, outlined: true)[DAFTAR LAMPIRAN]
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   // Lampiran dibuat sebagai figure dengan kind: "lampiran"
   outline(
     title: none,
@@ -869,7 +862,7 @@
 //   // Heading level 1 tanpa nomor bab, tetap masuk outline (Daftar Isi)
 //   heading(level: 1, numbering: none, outlined: true)[DAFTAR PUSTAKA]
 //   // Reset counter agar bab berikutnya tidak terganggu
-//   counter(heading).update((ch, ..rest) => (ch - 1,))
+//   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
 //   set par(
 //     first-line-indent: 0pt,
 //     hanging-indent:    1cm,    // setiap entri: baris kedua dst. menjorok 1 cm
@@ -886,7 +879,7 @@
   // Heading level 1 tanpa nomor bab, tetap masuk outline (Daftar Isi)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR PUSTAKA]
   // Reset counter agar bab berikutnya tidak terganggu
-  counter(heading).update((ch, ..rest) => (ch - 1,))
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   set par(
     first-line-indent: 0pt,
     hanging-indent: 1cm, // setiap entri: baris kedua dst. menjorok 1 cm
@@ -912,7 +905,7 @@
 #let lampiran(isi) = {
   pagebreak(weak: true)
   heading(level: 1, numbering: none, outlined: true)[LAMPIRAN]
-  counter(heading).update((ch, ..rest) => (ch - 1,))
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   set par(leading: _leading, spacing: _leading, justify: true)
   isi
 }
