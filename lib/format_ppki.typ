@@ -38,6 +38,45 @@
 //     logo:          image("logo-ipb.png"),  // opsional
 //   )
 //
+//   // ── Halaman Judul Dalam (Lampiran 7) — berbeda dari sampul ──
+//   #halaman-judul-dalam(
+//     judul:         "Judul Karya Ilmiah",
+//     nama:          "Nama Lengkap",
+//     jenis-karya:   "skripsi",        // atau "tesis" / "disertasi" / "laporan-akhir"
+//     program-studi: "Program Studi",
+//     departemen:    "Departemen",
+//     fakultas:      "Fakultas",
+//     tahun:         "2024",
+//     // gelar: "Sarjana Komputer",     // opsional, override otomatis
+//   )
+//
+//   // ── Halaman Hak Cipta (Lampiran 6) — wajib untuk tesis/disertasi ──
+//   #halaman-hak-cipta(tahun: "2024")
+//
+//   // ── Halaman Penguji & Pengesahan (Lampiran 8 & 9) ──
+//   #halaman-penguji(
+//     penguji: ("Dr. Nama Penguji, M.Si.", "Dr. Nama Penguji 2, M.Si."),
+//     judul:   "Tim Penguji pada Ujian Skripsi:",
+//   )
+//   #lembar-pengesahan(
+//     judul:         "Judul Karya Ilmiah",
+//     nama:          "Nama Lengkap",
+//     nim:           "NXXXXXXXXX",
+//     jenis-karya:   "skripsi",
+//     program-studi: "Program Studi",
+//     pembimbing:    ("Dr. Pembimbing 1, M.Si.", "Dr. Pembimbing 2, M.Si."),
+//     ketua:         "Prof. Dr. Ketua Departemen, M.Si.",
+//     ketua-label:   "Ketua Departemen Ilmu Komputer:",
+//     // dekan:      "Prof. Dr. Dekan, M.Si.",   // tambahkan untuk tesis/disertasi
+//     tanggal-ujian: "1 Januari 2024",
+//     tanggal-lulus: "15 Januari 2024",
+//   )
+//
+//   // ── Prakata (Lampiran 10) ──
+//   #prakata[
+//     Puji dan syukur penulis panjatkan kepada Allah subhanaahu wa ta'ala…
+//   ]
+//
 //   #abstrak(
 //     nama:        "NAMA MAHASISWA",
 //     judul:       "Judul Skripsi dalam Bahasa Indonesia",
@@ -296,6 +335,25 @@
     v(_leading)
   }
 
+  // ── Tampilan Judul Sub-sub-subbab (Level 4) ───────────────
+  // • Times New Roman 12pt, tidak tebal (regular)
+  // • Hanya huruf PERTAMA judul yang kapital (bukan title case)
+  // • Posisi: kiri (left-aligned)
+  // • Tidak disarankan, hanya jika benar-benar diperlukan
+  // (PPKI Lampiran 17: catatan "Pengebaban 4 tingkat tidak disarankan")
+  show heading.where(level: 4): it => {
+    set par(first-line-indent: 0pt, spacing: 0pt, leading: _leading)
+    v(1.5 * _leading)
+    text(font: _font, size: _sz-body, weight: "regular")[
+      #if it.numbering != none {
+        context counter(heading).display("1.1.1.1")
+        h(0.75em)
+      }
+      #it.body
+    ]
+    v(_leading)
+  }
+
   // ── Tabel ────────────────────────────────────────────────
   // • Caption/judul tabel di ATAS tabel (PPKI Bab VI butir 6.1)
   // • Hanya tiga garis horizontal; tidak ada garis vertikal
@@ -381,8 +439,8 @@
   // (PPKI Lampiran 1b: "Times New Roman 14, kapital, maksimal 3 baris, spasi satu, posisi center")
   text(weight: "bold")[#upper(judul)]
 
-  // ±12 cm dari atas kertas → nama (jarak 7 cm dari judul)
-  v(3.5cm)
+  // ±12 cm dari atas kertas → nama (jarak 7 cm dari posisi judul)
+  v(5.5cm)
 
   // Nama: Times New Roman 14pt
   text(weight: "bold")[#nama]
@@ -403,7 +461,7 @@
   }
 
   // ±23,7 cm dari atas kertas → nama departemen/prodi/institusi (jarak 5,7 cm dari logo)
-  v(1.5cm)
+  v(3.5cm)
 
   // Program Studi, Departemen (jika ada), Fakultas, Institusi, Kota, Tahun
   // Times New Roman 14pt (PPKI Lampiran 1b)
@@ -426,46 +484,203 @@
   v(3cm)
 }
 
-/// Alias: halaman judul (salinan sampul, dicetak di kertas putih).
-/// Parameter identik dengan halaman-sampul.
-#let halaman-judul = halaman-sampul
+/// Halaman Judul Dalam — cetakan di kertas putih, berbeda dari sampul.
+/// Referensi: Lampiran 7a (laporan akhir), 7b (skripsi), 7d (tesis), 7e (disertasi) PPKI.
+///
+/// Perbedaan dari halaman-sampul: tidak ada logo; ada kalimat syarat memperoleh gelar
+/// di antara nama dan blok institusi.
+///
+/// Parameter:
+///   judul         - Judul dalam HURUF KAPITAL
+///   nama          - Nama lengkap mahasiswa
+///   nim           - NIM (tidak ditampilkan di halaman ini, disimpan untuk konsistensi)
+///   jenis-karya   - "laporan-akhir" | "skripsi" | "tesis" | "disertasi"
+///   program-studi - Nama program studi
+///   departemen    - Nama departemen (boleh kosong)
+///   fakultas      - Nama fakultas/sekolah
+///   institusi     - Default: "INSTITUT PERTANIAN BOGOR"
+///   kota          - Default: "BOGOR"
+///   tahun         - Tahun lulus
+///   gelar         - Override gelar (mis. "Sarjana Komputer"). Jika kosong,
+///                   ditentukan otomatis: laporan-akhir→"Ahli Madya",
+///                   skripsi→"Sarjana", tesis→"Magister Sains", disertasi→"Doktor"
+#let halaman-judul-dalam(
+  judul: "",
+  nama: "",
+  nim: "",
+  jenis-karya: "skripsi",
+  program-studi: "",
+  departemen: "",
+  fakultas: "",
+  institusi: "INSTITUT PERTANIAN BOGOR",
+  kota: "BOGOR",
+  tahun: "",
+  gelar: "",
+) = {
+  set page(
+    paper: "a4",
+    margin: (left: 4cm, right: 3cm, top: 0pt, bottom: 0pt),
+    numbering: none,
+    header: none,
+    footer: none,
+  )
+  set text(font: _font, size: _sz-bab)
+  set par(leading: _leading, first-line-indent: 0pt, justify: false)
+
+  let _gelar = if gelar != "" { gelar } else if jenis-karya == "laporan-akhir" {
+    "Ahli Madya"
+  } else if jenis-karya == "tesis" {
+    "Magister Sains"
+  } else if jenis-karya == "disertasi" {
+    "Doktor"
+  } else {
+    "Sarjana"
+  }
+
+  let _jenis-kapital = if jenis-karya == "laporan-akhir" { "Laporan Akhir" }
+    else if jenis-karya == "tesis" { "Tesis" }
+    else if jenis-karya == "disertasi" { "Disertasi" }
+    else { "Skripsi" }
+
+  // ── Judul dan Nama ─────────────────────────────────
+  align(center)[
+    #v(5cm)
+    #text(weight: "bold")[#upper(judul)]
+    #v(4.5cm)
+    #text(weight: "bold")[#nama]
+  ]
+
+  // ── Kalimat syarat memperoleh gelar ────────────────
+  align(center)[
+    #v(2cm)
+    #text(size: _sz-body)[
+      #_jenis-kapital \
+      sebagai salah satu syarat untuk memperoleh gelar \
+      #_gelar pada \
+      Program Studi #program-studi
+    ]
+  ]
+
+  // ── Blok institusi (bawah halaman) ─────────────────
+  let dept-line = if departemen != "" { "\n" + upper(departemen) } else { "" }
+  place(
+    bottom + center,
+    dy: -3cm,
+    text(weight: "bold", size: _sz-bab)[
+      #(
+        upper(program-studi)
+          + dept-line
+          + "\n"
+          + upper(fakultas)
+          + "\n"
+          + upper(institusi)
+          + "\n"
+          + upper(kota)
+          + "\n"
+          + tahun
+      )
+    ],
+  )
+}
+
+
+// ─── Halaman Hak Cipta ───────────────────────────────────────
+
+/// Membuat halaman Hak Cipta.
+/// Wajib untuk tesis dan disertasi; opsional untuk skripsi dan laporan akhir.
+/// Referensi: Lampiran 6 PPKI.
+///
+/// Parameter:
+///   tahun  - Tahun karya ilmiah
+#let halaman-hak-cipta(tahun: "") = {
+  set page(
+    paper: "a4",
+    margin: (inside: 4cm, outside: 3cm, top: 3cm, bottom: 3cm),
+    numbering: none,
+    header: none,
+    footer: none,
+  )
+  set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: true)
+  set text(font: _font, size: _sz-body)
+
+  v(1fr)
+
+  [
+    *© Hak Cipta milik IPB, tahun #tahun* \
+    *Hak Cipta dilindungi Undang-Undang*
+  ]
+
+  v(_leading)
+
+  [
+    Dilarang mengutip sebagian atau seluruh karya tulis ini tanpa mencantumkan atau
+    menyebutkan sumbernya. Pengutipan hanya untuk kepentingan pendidikan, penelitian,
+    penulisan karya ilmiah, penyusunan laporan, penulisan kritik, atau tinjauan suatu
+    masalah, dan pengutipan tersebut tidak merugikan kepentingan IPB.
+  ]
+
+  v(_leading)
+
+  [
+    Dilarang mengumumkan dan memperbanyak sebagian atau seluruh karya tulis ini
+    dalam bentuk apa pun tanpa izin IPB.
+  ]
+
+  v(1fr)
+}
 
 
 // ─── Halaman Penguji Luar Komisi & Lembar Pengesahan ────────
 
-/// Halaman penguji luar komisi. Diletakkan pada halaman GENAP sehingga
-/// berhadapan (saling tatap) dengan lembar pengesahan di halaman gasal
-/// berikutnya pada cetak bolak-balik. (PPKI Lampiran 16 butir 4).
+/// Halaman penguji (tim penguji / penguji luar komisi). Diletakkan pada halaman
+/// GENAP sehingga berhadapan dengan lembar pengesahan di halaman gasal berikutnya
+/// pada cetak bolak-balik. (PPKI Lampiran 16 butir 4, Lampiran 8a-8d).
 ///
 /// Panggil SEBELUM #lembar-pengesahan(...) agar urutannya benar:
 ///   halaman genap (penguji) di kiri, halaman gasal (pengesahan) di kanan.
+///
+/// Parameter:
+///   penguji - Array nama penguji (satu atau lebih), mis. ("Dr A", "Dr B")
+///   judul   - Judul/label halaman, mis.:
+///               "Penguji pada ujian Laporan Akhir:"    (Lampiran 8a)
+///               "Tim Penguji pada Ujian Skripsi:"      (Lampiran 8b)
+///               "Tim Penguji pada Ujian Tesis:"        (Lampiran 8c)
+///               "Penguji Luar Komisi Pembimbing pada Ujian Tertutup Disertasi:" (Lampiran 8d)
 #let halaman-penguji(
-  nama-penguji: "",
-  jabatan: "Penguji Luar Komisi",
+  penguji: (),
+  judul: "Tim Penguji pada Ujian Skripsi:",
 ) = {
   pagebreak(to: "even", weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   set text(font: _font, size: _sz-body)
-  align(center)[
-    #text(size: _sz-bab, weight: "bold")[#upper(jabatan)]
-    #v(2 * _leading)
-    #nama-penguji
-  ]
+
+  [#judul]
+
+  v(_leading)
+
+  for (i, p) in penguji.enumerate() {
+    [#(i + 1) #h(0.5em) #p \ ]
+  }
 }
 
 /// Lembar pengesahan. Dipaksa mulai pada halaman GASAL sehingga berhadapan
 /// dengan halaman penguji luar komisi (halaman genap) pada cetak bolak-balik.
-/// (PPKI Lampiran 16 butir 4, Lampiran 2).
+/// (PPKI Lampiran 16 butir 4, Lampiran 9a-9e).
 ///
 /// Parameter:
-///   judul       - Judul karya ilmiah
-///   nama        - Nama penulis
-///   nim         - NIM
-///   jenis-karya - "skripsi" | "tesis" | "disertasi" | "laporan akhir"
+///   judul        - Judul karya ilmiah
+///   nama         - Nama penulis
+///   nim          - NIM
+///   jenis-karya  - "skripsi" | "tesis" | "disertasi" | "laporan akhir"
 ///   program-studi
-///   pembimbing  - Array nama pembimbing, mis. ("Dr A", "Dr B")
-///   ketua-dep   - Nama ketua departemen
-///   dekan       - Nama dekan (opsional, untuk tesis/disertasi)
+///   pembimbing   - Array nama pembimbing, mis. ("Dr A", "Dr B")
+///   ketua        - Nama ketua departemen/program studi yang menandatangani
+///   ketua-label  - Label jabatan ketua, mis.:
+///                    "Ketua Program Studi Ilmu Komputer:"  (default untuk skripsi)
+///                    "Ketua Departemen Ilmu Komputer:"     (pilihan lain untuk skripsi)
+///                    "Ketua Program Studi:"                (untuk tesis/disertasi)
+///   dekan        - Nama dekan (opsional; untuk laporan akhir, tesis, disertasi)
+///   dekan-label  - Label jabatan dekan (default: "Dekan Fakultas/Sekolah:")
 ///   tanggal-ujian
 ///   tanggal-lulus
 #let lembar-pengesahan(
@@ -475,8 +690,10 @@
   jenis-karya: "skripsi",
   program-studi: "",
   pembimbing: (),
-  ketua-dep: "",
+  ketua: "",
+  ketua-label: "Ketua Program Studi:",
   dekan: "",
+  dekan-label: "Dekan Fakultas/Sekolah:",
   tanggal-ujian: "",
   tanggal-lulus: "",
 ) = {
@@ -511,15 +728,15 @@
 
   align(center)[
     Diketahui oleh \
-    Ketua Departemen/Program Studi: \
+    #ketua-label \
     #v(3em)
-    #ketua-dep
+    #ketua
   ]
 
   if dekan != "" {
     v(_leading)
     align(center)[
-      Dekan: \
+      #dekan-label \
       #v(3em)
       #dekan
     ]
@@ -549,6 +766,33 @@
 ///     ]
 ///   ]
 #let bertingkat(body) = pad(left: 0.5cm, body)
+
+
+// ─── Prakata ─────────────────────────────────────────────────
+
+/// Membuat halaman Prakata (halaman baru, tanpa nomor bab, masuk Daftar Isi).
+/// Referensi: Lampiran 10 PPKI.
+///
+/// Contoh:
+///   #prakata[
+///     Puji dan syukur penulis panjatkan kepada Allah … sehingga karya ilmiah ini
+///     berhasil diselesaikan. …
+///
+///     Bogor, Januari 2024
+///
+///     Penulis
+///   ]
+#let prakata(isi) = {
+  pagebreak(weak: true)
+  set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: true)
+  set text(font: _font, size: _sz-body)
+  align(center)[
+    #text(size: _sz-bab, weight: "bold")[PRAKATA]
+  ]
+  v(_leading)
+  set par(first-line-indent: 1cm, leading: _leading, spacing: _leading, justify: true)
+  isi
+}
 
 
 // ─── Halaman Pernyataan dan Pelimpahan Hak Cipta ─────────────
@@ -787,7 +1031,11 @@
 // ─── Daftar Isi, Daftar Tabel, Daftar Gambar ─────────────────
 
 /// Membuat halaman Daftar Isi otomatis (berdasarkan heading dalam naskah).
-/// Referensi: Lampiran 11 dan 12 PPKI.
+/// Referensi: Lampiran 11 PPKI.
+///
+/// Spasi yang diterapkan (PPKI Lampiran 11):
+///   • Setelah judul DAFTAR ISI: 2 spasi
+///   • Sebelum setiap entri bab (level 1): before 6pt
 #let daftar-isi() = {
   pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
@@ -795,6 +1043,11 @@
     #text(font: _font, size: _sz-bab, weight: "bold")[DAFTAR ISI]
   ]
   v(2 * _leading)
+  // Tambah before 6pt sebelum setiap entri bab (level 1)
+  show outline.entry.where(level: 1): it => {
+    v(6pt, weak: true)
+    it
+  }
   outline(
     title: none,
     indent: 1cm,
@@ -803,10 +1056,24 @@
 
 /// Membuat halaman Daftar Tabel otomatis.
 /// Tampilkan jika jumlah tabel > 1 (PPKI Bab III 3.1.12).
+///
+/// Format entri: "1  Judul Tabel 1 ...... xx" (tanpa kata "Tabel" — PPKI Lampiran 12)
 #let daftar-tabel() = {
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR TABEL]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
+  // Tampilkan hanya nomor urut (tanpa kata "Tabel") sesuai Lampiran 12
+  show outline.entry: it => {
+    let fig = it.element
+    link(fig.location())[
+      #context counter(figure.where(kind: table)).at(fig.location()).first()
+      #h(0.5em)
+      #fig.caption.body
+    ]
+    it.fill
+    link(fig.location())[#it.page]
+    linebreak()
+  }
   outline(
     title: none,
     target: figure.where(kind: table),
@@ -815,10 +1082,24 @@
 
 /// Membuat halaman Daftar Gambar otomatis.
 /// Tampilkan jika jumlah gambar > 1 (PPKI Bab III 3.1.12).
+///
+/// Format entri: "1  Judul Gambar 1 ...... xx" (tanpa kata "Gambar" — PPKI Lampiran 12)
 #let daftar-gambar() = {
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR GAMBAR]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
+  // Tampilkan hanya nomor urut (tanpa kata "Gambar") sesuai Lampiran 12
+  show outline.entry: it => {
+    let fig = it.element
+    link(fig.location())[
+      #context counter(figure.where(kind: image)).at(fig.location()).first()
+      #h(0.5em)
+      #fig.caption.body
+    ]
+    it.fill
+    link(fig.location())[#it.page]
+    linebreak()
+  }
   outline(
     title: none,
     target: figure.where(kind: image),
