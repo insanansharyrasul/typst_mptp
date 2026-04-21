@@ -537,10 +537,9 @@
     "Sarjana"
   }
 
-  let _jenis-kapital = if jenis-karya == "laporan-akhir" { "Laporan Akhir" }
-    else if jenis-karya == "tesis" { "Tesis" }
-    else if jenis-karya == "disertasi" { "Disertasi" }
-    else { "Skripsi" }
+  let _jenis-kapital = if jenis-karya == "laporan-akhir" { "Laporan Akhir" } else if jenis-karya == "tesis" {
+    "Tesis"
+  } else if jenis-karya == "disertasi" { "Disertasi" } else { "Skripsi" }
 
   // ── Judul dan Nama ─────────────────────────────────
   align(center)[
@@ -600,33 +599,31 @@
     header: none,
     footer: none,
   )
-  set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: true)
+  set par(first-line-indent: 1cm, leading: _leading, spacing: _leading, justify: true)
   set text(font: _font, size: _sz-body)
 
   v(1fr)
 
-  [
-    *© Hak Cipta milik IPB, tahun #tahun* \
-    *Hak Cipta dilindungi Undang-Undang*
+  align(center)[
+    © Hak Cipta milik IPB, tahun #tahun \
+    Hak Cipta dilindungi Undang-Undang
   ]
 
   v(_leading)
 
   [
-    Dilarang mengutip sebagian atau seluruh karya tulis ini tanpa mencantumkan atau
+    _Dilarang mengutip sebagian atau seluruh karya tulis ini tanpa mencantumkan atau
     menyebutkan sumbernya. Pengutipan hanya untuk kepentingan pendidikan, penelitian,
     penulisan karya ilmiah, penyusunan laporan, penulisan kritik, atau tinjauan suatu
-    masalah, dan pengutipan tersebut tidak merugikan kepentingan IPB.
+    masalah, dan pengutipan tersebut tidak merugikan kepentingan IPB._
   ]
 
   v(_leading)
 
   [
-    Dilarang mengumumkan dan memperbanyak sebagian atau seluruh karya tulis ini
-    dalam bentuk apa pun tanpa izin IPB.
+    _Dilarang mengumumkan dan memperbanyak sebagian atau seluruh karya tulis ini
+    dalam bentuk apa pun tanpa izin IPB._
   ]
-
-  v(1fr)
 }
 
 
@@ -653,6 +650,8 @@
   pagebreak(to: "even", weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   set text(font: _font, size: _sz-body)
+
+  v(1fr)
 
   [#judul]
 
@@ -691,7 +690,7 @@
   program-studi: "",
   pembimbing: (),
   ketua: "",
-  ketua-label: "Ketua Program Studi:",
+  ketua-label: "Ketua Program Studi",
   dekan: "",
   dekan-label: "Dekan Fakultas/Sekolah:",
   tanggal-ujian: "",
@@ -701,53 +700,54 @@
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: false)
   set text(font: _font, size: _sz-body)
 
-  align(center)[
-    Judul #jenis-karya : #judul \
-    Nama : #nama \
-    NIM : #nim \
-    Program Studi : #program-studi
-  ]
+  let _jenis-label = if jenis-karya == "laporan-akhir" { "Laporan Akhir" } else if jenis-karya == "tesis" {
+    "Tesis"
+  } else if jenis-karya == "disertasi" { "Disertasi" } else { "Skripsi" }
 
-  v(2em)
+  // Blok info: label rata kiri dengan titik dua sejajar, isi menyambung
+  grid(
+    columns: (auto, 1em, 1fr),
+    row-gutter: 0.4em,
+    [Judul #_jenis-label], [ : ], [#judul],
+    [Nama], [ : ], [#nama],
+    [NIM], [ : ], [#nim],
+  )
+
+  v(7em)
 
   align(center)[Disetujui oleh]
 
-  v(_leading)
-
-  // Pembimbing (1 atau 2 orang)
+  // Pembimbing (1 atau 2 orang): nama digarisbawahi, label di bawah
   for (i, p) in pembimbing.enumerate() {
+    v(7.5em)
     align(center)[
-      Pembimbing #if pembimbing.len() > 1 [#(i + 1)]: \
-      #v(3em)
-      #p
-    ]
-    v(_leading)
-  }
-
-  v(_leading)
-
-  align(center)[
-    Diketahui oleh \
-    #ketua-label \
-    #v(3em)
-    #ketua
-  ]
-
-  if dekan != "" {
-    v(_leading)
-    align(center)[
-      #dekan-label \
-      #v(3em)
-      #dekan
+      #underline[#p] \
+      Pembimbing#if pembimbing.len() > 1 [ #(i + 1)]
     ]
   }
 
   v(2em)
 
+  align(center)[Diketahui oleh]
+
+  v(8.5em)
+
   align(center)[
-    Tanggal ujian: #tanggal-ujian \
-    Tanggal lulus: #tanggal-lulus
+    #underline[#ketua] \
+    #ketua-label
   ]
+
+  if dekan != "" {
+    v(2.5em)
+    align(center)[
+      #underline[#dekan] \
+      #dekan-label
+    ]
+  }
+
+  v(5em)
+
+  [Tanggal Lulus: #tanggal-lulus]
 }
 
 
@@ -813,13 +813,16 @@
   jenis-karya: "skripsi",
   tanggal: "",
 ) = {
-  set par(first-line-indent: 0pt, justify: true, leading: _leading, spacing: _leading)
+  set par(first-line-indent: 1cm, justify: true, leading: _leading, spacing: _leading)
   set text(font: _font, size: _sz-body)
 
-  align(center)[
-    *#upper("PERNYATAAN MENGENAI " + jenis-karya + " DAN SUMBER INFORMASI")*
-    *#upper("SERTA PELIMPAHAN HAK CIPTA")*
-  ]
+  {
+    set par(first-line-indent: 0pt)
+    align(center)[
+      *#upper("PERNYATAAN MENGENAI " + jenis-karya + linebreak() + " DAN SUMBER INFORMASI")*
+      *#upper("SERTA PELIMPAHAN HAK CIPTA")*
+    ]
+  }
 
   v(1em)
 
@@ -874,7 +877,7 @@
   set par(
     leading: _leading,
     spacing: _leading,
-    first-line-indent: 0pt,
+    first-line-indent: 1cm,
     justify: true,
   )
   set text(font: _font, size: _sz-body)
@@ -901,7 +904,10 @@
 
   v(_leading)
 
-  [*Kata kunci:* #kata-kunci]
+  {
+    set par(first-line-indent: 0pt)
+    [Kata kunci: #kata-kunci]
+  }
 }
 
 
@@ -926,7 +932,7 @@
   set par(
     leading: _leading,
     spacing: _leading,
-    first-line-indent: 0pt,
+    first-line-indent: 1cm,
     justify: true,
   )
   set text(font: _font, size: _sz-body)
@@ -951,7 +957,10 @@
 
   v(_leading)
 
-  [*Keywords:* #keywords]
+  {
+    set par(first-line-indent: 0pt)
+    [_Keywords:_ #keywords]
+  }
 }
 
 
@@ -1071,7 +1080,7 @@
       #fig.caption.body
     ]
     it.fill
-    link(fig.location())[#it.page]
+    link(fig.location())[#context counter(page).at(fig.location()).first()]
     linebreak()
   }
   outline(
@@ -1097,7 +1106,7 @@
       #fig.caption.body
     ]
     it.fill
-    link(fig.location())[#it.page]
+    link(fig.location())[#context counter(page).at(fig.location()).first()]
     linebreak()
   }
   outline(
