@@ -62,6 +62,24 @@ Bagian Awal  → nomor halaman Romawi kecil: i, ii, iii, …
 Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 ```
 
+### Urutan Halaman Bagian Awal (PPKI Bab III)
+
+| Urutan | Halaman                        | Fungsi                       |
+| ------ | ------------------------------ | ---------------------------- |
+| 1      | Halaman sampul                 | `#halaman-sampul(...)`       |
+| 2      | Pernyataan keaslian            | `#halaman-pernyataan(...)`   |
+| 3      | Abstrak (Indonesia)            | `#abstrak(...)`              |
+| 4      | Abstract (Inggris)             | `#abstract-en(...)`          |
+| 5      | Halaman hak cipta              | `#halaman-hak-cipta(...)`    |
+| 6      | Halaman judul dalam            | `#halaman-judul-dalam(...)`  |
+| 7      | Halaman penguji                | `#halaman-penguji(...)`      |
+| 8      | Lembar pengesahan              | `#lembar-pengesahan(...)`    |
+| 9      | Prakata                        | `#prakata[...]`              |
+| 10     | Daftar isi                     | `#daftar-isi()`              |
+| 11     | Daftar tabel (jika tabel > 1)  | `#daftar-tabel()`            |
+| 12     | Daftar gambar (jika gambar > 1)| `#daftar-gambar()`           |
+| 13     | Daftar lampiran (jika ada)     | `#daftar-lampiran()`         |
+
 ### Contoh Lengkap
 
 ```typst
@@ -82,18 +100,18 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 #show: bagian-awal
 
 #halaman-sampul(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama:          "Budi Santoso",
+  judul:         "PENGARUH PUPUK ORGANIK TERHADAP PERTUMBUHAN PADI",
+  nama:          "BUDI SANTOSO",
   nim:           "A1234567",
-  program-studi: "Agronomi dan Hortikultura",
-  departemen:    "Agronomi dan Hortikultura",
+  program-studi: "AGRONOMI DAN HORTIKULTURA",
+  departemen:    "AGRONOMI DAN HORTIKULTURA",
   fakultas:      "Fakultas Pertanian",
   tahun:         "2024",
-  logo:          image("assets/logo-ipb.png", height: 2.5cm),  // hapus jika tidak ada logo
+  logo:          image("assets/logo-ipb.png", width: 2.5cm),
 )
 
 #halaman-pernyataan(
-  nama:        "Budi Santoso",
+  nama:        "BUDI SANTOSO",
   nim:         "A1234567",
   judul:       "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
   jenis-karya: "skripsi",
@@ -117,9 +135,53 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
   keywords:   "keyword1, keyword2, keyword3",
 )
 
+#halaman-hak-cipta(tahun: "2024")
+
+#halaman-judul-dalam(
+  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
+  nama:          "BUDI SANTOSO",
+  nim:           "A1234567",
+  jenis-karya:   "skripsi",
+  program-studi: "AGRONOMI DAN HORTIKULTURA",
+  departemen:    "AGRONOMI DAN HORTIKULTURA",
+  fakultas:      "Fakultas Pertanian",
+  tahun:         "2024",
+)
+
+#halaman-penguji(
+  penguji: ("Dr. Nama Penguji, M.Si.", "Dr. Nama Penguji 2, M.Si."),
+  judul:   "Tim Penguji pada Ujian Skripsi:",
+)
+
+#lembar-pengesahan(
+  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
+  nama:          "Budi Santoso",
+  nim:           "A1234567",
+  jenis-karya:   "skripsi",
+  program-studi: "Agronomi dan Hortikultura",
+  pembimbing:    ("Dr. Ahmad Rifai, M.Si.", "Dr. Siti Maryam, M.Sc."),
+  ketua:         "Prof. Dr. Ketua Program Studi, M.Si.",
+  ketua-label:   "Ketua Program Studi Agronomi dan Hortikultura:",
+  tanggal-ujian: "1 Januari 2024",
+  tanggal-lulus: "15 Januari 2024",
+)
+
+#prakata[
+  Puji dan syukur penulis panjatkan kepada Allah subhanaahu wa ta'ala atas segala
+  karunia-Nya sehingga karya ilmiah ini berhasil diselesaikan. …
+
+  #v(1em)
+  #align(right)[
+    Bogor, Januari 2024
+    #v(2em)
+    _Budi Santoso_
+  ]
+]
+
 #daftar-isi()
 #daftar-tabel()    // hapus jika tabel ≤ 1
 #daftar-gambar()   // hapus jika gambar ≤ 1
+#daftar-lampiran() // hapus jika tidak ada lampiran
 
 // ── BAGIAN ISI ───────────────────────────────────────────────
 #show: bagian-isi
@@ -130,7 +192,7 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 
 Paragraf pertama dimulai di sini …
 
-== Perumusan Masalah
+== Rumusan Masalah
 
 ...
 
@@ -140,11 +202,9 @@ Paragraf pertama dimulai di sini …
 
 = TINJAUAN PUSTAKA
 
-== Tanaman Padi
-
 ...
 
-= METODE PENELITIAN
+= METODE
 
 == Waktu dan Tempat
 
@@ -153,6 +213,10 @@ Paragraf pertama dimulai di sini …
 = HASIL DAN PEMBAHASAN
 
 == Hasil
+
+...
+
+== Pembahasan
 
 ...
 
@@ -184,22 +248,26 @@ Paragraf pertama dimulai di sini …
 
 ### Halaman Khusus
 
-| Fungsi                     | Keterangan                      | Ref. PPKI        |
-| -------------------------- | ------------------------------- | ---------------- |
-| `#halaman-sampul(...)`     | Halaman sampul                  | Lampiran 1b–1e   |
-| `#halaman-judul(...)`      | Salinan sampul (kertas putih)   | Bab III 3.1.2    |
-| `#halaman-pernyataan(...)` | Pernyataan keaslian & hak cipta | Lampiran 3       |
-| `#abstrak(...)`            | Abstrak bahasa Indonesia        | Lampiran 4a–4b   |
-| `#abstract-en(...)`        | Abstract bahasa Inggris         | Lampiran 4a–4b   |
-| `#ringkasan(...)`          | Ringkasan tesis/disertasi       | Lampiran 5c–5d   |
-| `#summary(...)`            | Summary bahasa Inggris          | Lampiran 5e      |
-| `#daftar-isi()`            | Daftar isi otomatis             | Lampiran 11      |
-| `#daftar-tabel()`          | Daftar tabel otomatis           | Lampiran 12      |
-| `#daftar-gambar()`         | Daftar gambar otomatis          | Lampiran 12      |
-| `#daftar-lampiran()`       | Daftar lampiran otomatis        | Lampiran 12      |
-| `#daftar-pustaka(...)`     | Daftar pustaka                  | Bab VII          |
-| `#lampiran[...]`           | Halaman lampiran                | Bab III 3.3.1    |
-| `#riwayat-hidup[...]`      | Riwayat hidup                   | Lampiran 14a–14b |
+| Fungsi                         | Keterangan                      | Ref. PPKI        |
+| ------------------------------ | ------------------------------- | ---------------- |
+| `#halaman-sampul(...)`         | Halaman sampul                  | Lampiran 1b–1e   |
+| `#halaman-pernyataan(...)`     | Pernyataan keaslian & hak cipta | Lampiran 3       |
+| `#abstrak(...)`                | Abstrak bahasa Indonesia        | Lampiran 4a–4b   |
+| `#abstract-en(...)`            | Abstract bahasa Inggris         | Lampiran 4a–4b   |
+| `#ringkasan(...)`              | Ringkasan tesis/disertasi       | Lampiran 5c–5d   |
+| `#summary(...)`                | Summary bahasa Inggris          | Lampiran 5e      |
+| `#halaman-hak-cipta(...)`      | Halaman hak cipta               | Lampiran 6       |
+| `#halaman-judul-dalam(...)`    | Halaman judul dalam             | Lampiran 7a–7e   |
+| `#halaman-penguji(...)`        | Tim penguji / penguji luar      | Lampiran 8a–8d   |
+| `#lembar-pengesahan(...)`      | Lembar pengesahan               | Lampiran 9a–9e   |
+| `#prakata[...]`                | Prakata                         | Lampiran 10      |
+| `#daftar-isi()`                | Daftar isi otomatis             | Lampiran 11      |
+| `#daftar-tabel()`              | Daftar tabel otomatis           | Lampiran 12      |
+| `#daftar-gambar()`             | Daftar gambar otomatis          | Lampiran 12      |
+| `#daftar-lampiran()`           | Daftar lampiran otomatis        | Lampiran 12      |
+| `#daftar-pustaka(...)`         | Daftar pustaka                  | Bab VII          |
+| `#lampiran[...]`               | Halaman lampiran                | Bab III 3.3.1    |
+| `#riwayat-hidup[...]`          | Riwayat hidup                   | Lampiran 14a–14b |
 
 ### Penomoran Halaman
 
@@ -207,6 +275,12 @@ Paragraf pertama dimulai di sini …
 | -------------------- | -------------------------------------------------------- |
 | `#show: bagian-awal` | Nomor halaman Romawi: i, ii, iii, … (mulai ulang dari i) |
 | `#show: bagian-isi`  | Nomor halaman Arab: 1, 2, 3, … (mulai ulang dari 1)      |
+
+### Utilitas
+
+| Fungsi              | Keterangan                                             |
+| ------------------- | ------------------------------------------------------ |
+| `#bertingkat[...]`  | Paragraf bertingkat dengan indentasi +0,5 cm           |
 
 ---
 
@@ -346,6 +420,16 @@ a) Poin pertama
 b) Poin kedua
 ```
 
+Untuk paragraf bertingkat (indentasi bertambah 0,5 cm per tingkat):
+```typst
+#bertingkat[
+  Paragraf tingkat 1.
+  #bertingkat[
+    Paragraf tingkat 2.
+  ]
+]
+```
+
 ---
 
 ## Kutipan
@@ -375,10 +459,11 @@ b) Poin kedua
 | Margin kanan, atas, bawah | 3 cm masing-masing                                         |
 | Font teks                 | Times New Roman 12pt                                       |
 | Font judul bab            | Times New Roman 14pt, tebal, kapital                       |
+| Font kode/komputer        | Courier New 11pt                                           |
 | Spasi                     | 1 spasi                                                    |
 | Indentasi alinea          | 1 cm                                                       |
 | Perataan                  | Rata kanan-kiri (justified)                                |
-| Nomor halaman             | Pojok atas kanan; Romawi untuk bagian awal, Arab untuk isi |
+| Nomor halaman             | Pojok atas kanan/kiri (mirror); Romawi untuk bagian awal, Arab untuk isi |
 
 ---
 
