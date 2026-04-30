@@ -281,14 +281,15 @@
   // • Jarak sebelum judul bab: before 6pt (PPKI aturan "spasi 1 dan before 6")
   // (PPKI Lampiran 16 butir 9 dan Lampiran 17)
   show heading.where(level: 1): it => {
-    pagebreak(weak: true)
+    // Bab bernomor selalu mulai halaman baru; heading tanpa nomor (Daftar Tabel,
+    // Daftar Gambar, Daftar Lampiran) mengalir ke halaman yang sama.
+    if it.numbering != none { pagebreak(weak: true) }
     set par(first-line-indent: 0pt, spacing: 0pt, leading: _leading)
-    v(6pt)
+    v(if it.numbering != none { 6pt } else { 2 * _leading })
     align(
       center,
       text(font: _font, size: _sz-bab, weight: "bold")[
         #if it.numbering != none {
-          // Tampilkan nomor Romawi lalu spasi
           context counter(heading).display("I")
           h(1em)
         }
@@ -377,6 +378,27 @@
   // ── Gambar ───────────────────────────────────────────────
   // • Caption/judul gambar di BAWAH gambar (PPKI Bab VI butir 6.2)
   show figure.where(kind: image): set figure.caption(position: bottom)
+
+  // Caption satu baris → center; caption multi-baris → hanging indent kiri.
+  show figure.caption: it => {
+    set par(first-line-indent: 0pt)
+    layout(size => context {
+      let prefix = [#it.supplement #it.counter.display(it.numbering)]
+      let full = [#prefix #it.body]
+      if measure(full).width <= size.width {
+        align(center, full)
+      } else {
+        set align(left)
+        grid(
+          columns: (auto, 1fr),
+          column-gutter: 0.4em,
+          align: top,
+          prefix,
+          it.body,
+        )
+      }
+    })
+  }
 
   // ── Mulai Konten ─────────────────────────────────────────
   body

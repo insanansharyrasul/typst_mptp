@@ -10,9 +10,6 @@
   jenis-karya: "skripsi",
 )
 
-// ── Bagian Awal (nomor halaman Romawi: i, ii, iii, …) ──
-#show: bagian-awal
-
 #halaman-sampul(
   judul: "JUDUL KARYA ILMIAH MAKSIMUM TIGA BARIS, LIMA BELAS KATA TIDAK TERMASUK KATA DEPAN DAN KATA SAMBUNG",
   nama: "NAMA LENGKAP",
@@ -34,7 +31,9 @@
   tanggal: "Bogor, Bulan Tahun 20XX",
 )
 
-#pagebreak()
+// ── Bagian Awal (nomor halaman Romawi: i, ii, iii, …) ──
+#show: bagian-awal
+
 #abstrak(
   nama: "NAMA MAHASISWA",
   judul: "Judul Skripsi dalam Bahasa Indonesia",
@@ -134,6 +133,7 @@
 
 
 #daftar-isi()
+#pagebreak()
 #daftar-tabel()    // hapus baris ini jika tabel ≤ 1
 #daftar-gambar()   // hapus baris ini jika gambar ≤ 1
 #daftar-lampiran() // hapus baris ini jika tidak ada lampiran
@@ -181,6 +181,11 @@ yang akan dicapai sebagai upaya pemecahan masalah maupun memahami gejala
 dapat diukur. Bila ada atau memungkinkan, dapat ditulis manfaat atau kegunaan
 hasil penelitian bagi kepentingan pengembangan ipteks, pertimbangan dalam
 mengambil kebijakan, kepentingan profesi maupun masyarakat pada umumnya.
+
+#figure(
+  image("assets/gambar_1.png", width: 5cm),
+  caption: "Contoh gambar"
+)
 
 == Manfaat
 
@@ -316,7 +321,7 @@ ini mengemukakan hal-hal yang perlu diteliti lebih lanjut terutama untuk
 memperbaiki kelemahan atau kekurangan dalam penelitian yang dilakukan atau
 perbaikan asumsi yang diambil sehingga didapatkan hasil yang lebih baik.
 
-#daftar-pustaka("../reference/reference.bib", style: "ipb.csl")
+#daftar-pustaka("../lib/reference.bib", style: "ipb.csl")
 
 #lampiran[
   #figure(
