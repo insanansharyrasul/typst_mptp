@@ -20,8 +20,14 @@
   logo: image("assets/logo-ipb.png", width: 2.5cm),
 )
 
-#pagebreak()
-#linebreak()
+#halaman-judul(
+  judul: "JUDUL KARYA ILMIAH MAKSIMUM TIGA BARIS, LIMA BELAS KATA TIDAK TERMASUK KATA DEPAN DAN KATA SAMBUNG",
+  nama: "NAMA LENGKAP",
+  nim: "NXXXXXXXXX",
+  program-studi: "PROGRAM STUDI",
+  fakultas: "Nama Fakultas/Sekolah",
+  tahun: "20XX",
+)
 
 #halaman-pernyataan(
   nama: "NAMA LENGKAP",
@@ -77,9 +83,6 @@
   tahun: "20XX",
 )
 
-
-#pagebreak()
-
 #halaman-penguji(
   penguji: ("Nama lengkap dan gelar", "Nama lengkap dan gelar"),
   judul: "Tim Penguji pada Ujian Skripsi:",
@@ -129,11 +132,7 @@
   ]
 ]
 
-#pagebreak()
-
-
 #daftar-isi()
-#pagebreak()
 #daftar-tabel()    // hapus baris ini jika tabel ≤ 1
 #daftar-gambar()   // hapus baris ini jika gambar ≤ 1
 #daftar-lampiran() // hapus baris ini jika tidak ada lampiran
@@ -259,7 +258,7 @@ Isi subbab tinjauan pustaka.
 
 #figure(
   caption: [Contoh judul gambar lebih dari satu baris maka baris kedua dimulai tepat di bawah huruf pertama judul gambar],
-  image("assets/image.png"),
+  image("assets/gambar_1.png"),
 )
 
 
@@ -321,7 +320,7 @@ ini mengemukakan hal-hal yang perlu diteliti lebih lanjut terutama untuk
 memperbaiki kelemahan atau kekurangan dalam penelitian yang dilakukan atau
 perbaikan asumsi yang diambil sehingga didapatkan hasil yang lebih baik.
 
-#daftar-pustaka("../lib/reference.bib", style: "ipb.csl")
+#daftar-pustaka("reference.bib", style: "ipb.csl")
 
 #lampiran[
   #figure(

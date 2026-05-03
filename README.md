@@ -230,7 +230,7 @@ Paragraf pertama dimulai di sini …
 
 ...
 
-#daftar-pustaka("../reference/reference.bib", style: "ipb.csl")
+#daftar-pustaka("reference/reference.bib", style: "ipb.csl")
 
 #lampiran[
   // Konten lampiran di sini
@@ -339,7 +339,7 @@ Hasil penelitian sebelumnya menunjukkan peningkatan hasil panen @smith2020.
 ### Memanggil daftar pustaka
 
 ```typst
-#daftar-pustaka("../reference/reference.bib", style: "ipb.csl")
+#daftar-pustaka("reference/reference.bib", style: "ipb.csl")
 ```
 
 Hanya referensi yang disitasi dalam teks yang akan muncul di daftar pustaka.

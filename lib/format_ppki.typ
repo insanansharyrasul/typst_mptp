@@ -146,6 +146,22 @@
 // dengan "single spacing" pada Typst untuk teks 12pt.
 #let _leading = 0.65em
 
+// Label jenis karya untuk ditampilkan (Title Case)
+#let _jenis-karya-title(jenis-karya) = {
+  if jenis-karya == "laporan-akhir" {
+    "Laporan Akhir"
+  } else if jenis-karya == "tesis" {
+    "Tesis"
+  } else if jenis-karya == "disertasi" {
+    "Disertasi"
+  } else {
+    "Skripsi"
+  }
+}
+
+// Label jenis karya untuk teks naratif (lowercase)
+#let _jenis-karya-lower(jenis-karya) = lower(_jenis-karya-title(jenis-karya))
+
 
 // ─── Penomoran Halaman ────────────────────────────────────────
 
@@ -171,7 +187,8 @@
   set page(
     numbering: "i",
     footer: none,
-    header: none,
+    header: _header-mirror("i"),
+    header-ascent: 1cm,
   )
   counter(page).update(1)
   body
@@ -441,6 +458,7 @@
   kota: "BOGOR",
   tahun: "",
   logo: none,
+  judul-size: _sz-bab,
 ) = {
   set page(
     paper: "a4",
@@ -458,7 +476,7 @@
 
   // Judul: Times New Roman 14pt, kapital semua, spasi 1, center
   // (PPKI Lampiran 1b: "Times New Roman 14, kapital, maksimal 3 baris, spasi satu, posisi center")
-  text(weight: "bold")[#upper(judul)]
+  text(size: judul-size, weight: "bold")[#upper(judul)]
 
   // ±12 cm dari atas kertas → nama (jarak 7 cm dari posisi judul)
   v(5.5cm)
@@ -486,6 +504,63 @@
 
   // Program Studi, Departemen (jika ada), Fakultas, Institusi, Kota, Tahun
   // Times New Roman 14pt (PPKI Lampiran 1b)
+  let dept-line = if departemen != "" { "\n" + upper(departemen) } else { "" }
+  text(weight: "bold")[
+    #(
+      upper(program-studi)
+        + dept-line
+        + "\n"
+        + upper(fakultas)
+        + "\n"
+        + upper(institusi)
+        + "\n"
+        + upper(kota)
+        + "\n"
+        + tahun
+    )
+  ]
+
+  v(3cm)
+}
+
+/// Halaman Judul (white-paper copy of cover).
+/// Referensi: PPKI 3.1.2 — "Halaman Judul merupakan salinan dari halaman sampul,
+/// dicetak di kertas berwarna putih."
+///
+/// Parameter: sama dengan halaman-sampul (kecuali logo tidak ditampilkan)
+#let halaman-judul(
+  judul: "",
+  nama: "",
+  nim: "",
+  program-studi: "",
+  departemen: "",
+  fakultas: "",
+  institusi: "INSTITUT PERTANIAN BOGOR",
+  kota: "BOGOR",
+  tahun: "",
+  judul-size: _sz-bab,
+) = {
+  set page(
+    paper: "a4",
+    margin: (left: 4cm, right: 3cm, top: 0pt, bottom: 0pt),
+    numbering: none,
+    header: none,
+    footer: none,
+  )
+  set text(font: _font, size: _sz-bab)
+  set par(leading: _leading, first-line-indent: 0pt, justify: false)
+  set align(center)
+
+  v(5cm)
+  text(size: judul-size, weight: "bold")[#upper(judul)]
+  v(5.5cm)
+  text(weight: "bold")[#nama]
+  v(5cm)
+
+  // No logo for white-paper copy
+
+  v(3.5cm)
+
   let dept-line = if departemen != "" { "\n" + upper(departemen) } else { "" }
   text(weight: "bold")[
     #(
@@ -538,11 +613,10 @@
   tahun: "",
   gelar: "",
 ) = {
+  pagebreak(weak: true)
   set page(
     paper: "a4",
     margin: (left: 4cm, right: 3cm, top: 0pt, bottom: 0pt),
-    numbering: none,
-    header: none,
     footer: none,
   )
   set text(font: _font, size: _sz-bab)
@@ -558,9 +632,7 @@
     "Sarjana"
   }
 
-  let _jenis-kapital = if jenis-karya == "laporan-akhir" { "Laporan Akhir" } else if jenis-karya == "tesis" {
-    "Tesis"
-  } else if jenis-karya == "disertasi" { "Disertasi" } else { "Skripsi" }
+  let _jenis-kapital = _jenis-karya-title(jenis-karya)
 
   // ── Judul dan Nama ─────────────────────────────────
   align(center)[
@@ -613,13 +685,7 @@
 /// Parameter:
 ///   tahun  - Tahun karya ilmiah
 #let halaman-hak-cipta(tahun: "") = {
-  set page(
-    paper: "a4",
-    margin: (inside: 4cm, outside: 3cm, top: 3cm, bottom: 3cm),
-    numbering: none,
-    header: none,
-    footer: none,
-  )
+  pagebreak(weak: true)
   set par(first-line-indent: 1cm, leading: _leading, spacing: _leading, justify: true)
   set text(font: _font, size: _sz-body)
 
@@ -633,17 +699,17 @@
   v(_leading)
 
   [
-    _Dilarang mengutip sebagian atau seluruh karya tulis ini tanpa mencantumkan atau
+    Dilarang mengutip sebagian atau seluruh karya tulis ini tanpa mencantumkan atau
     menyebutkan sumbernya. Pengutipan hanya untuk kepentingan pendidikan, penelitian,
     penulisan karya ilmiah, penyusunan laporan, penulisan kritik, atau tinjauan suatu
-    masalah, dan pengutipan tersebut tidak merugikan kepentingan IPB._
+    masalah, dan pengutipan tersebut tidak merugikan kepentingan IPB.
   ]
 
   v(_leading)
 
   [
-    _Dilarang mengumumkan dan memperbanyak sebagian atau seluruh karya tulis ini
-    dalam bentuk apa pun tanpa izin IPB._
+    Dilarang mengumumkan dan memperbanyak sebagian atau seluruh karya tulis ini
+    dalam bentuk apa pun tanpa izin IPB.
   ]
 }
 
@@ -667,6 +733,8 @@
 #let halaman-penguji(
   penguji: (),
   judul: "Tim Penguji pada Ujian Skripsi:",
+  subtitle: "",
+  subtitle2: "",
 ) = {
   pagebreak(to: "even", weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
@@ -678,8 +746,19 @@
 
   v(_leading)
 
+  if subtitle != "" {
+    v(_leading)
+    [#subtitle]
+    v(_leading)
+  }
+
   for (i, p) in penguji.enumerate() {
     [#(i + 1) #h(0.5em) #p \ ]
+  }
+
+  if subtitle2 != "" {
+    v(_leading)
+    [#subtitle2]
   }
 }
 
@@ -721,9 +800,7 @@
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: false)
   set text(font: _font, size: _sz-body)
 
-  let _jenis-label = if jenis-karya == "laporan-akhir" { "Laporan Akhir" } else if jenis-karya == "tesis" {
-    "Tesis"
-  } else if jenis-karya == "disertasi" { "Disertasi" } else { "Skripsi" }
+  let _jenis-label = _jenis-karya-title(jenis-karya)
 
   // Blok info: label rata kiri dengan titik dua sejajar, isi menyambung
   grid(
@@ -768,7 +845,13 @@
 
   v(5em)
 
-  [Tanggal Lulus: #tanggal-lulus]
+  if tanggal-ujian != "" {
+    [Tanggal Ujian: #tanggal-ujian]
+  }
+  if tanggal-lulus != "" {
+    if tanggal-ujian != "" { v(_leading) }
+    [Tanggal Lulus: #tanggal-lulus]
+  }
 }
 
 
@@ -807,9 +890,10 @@
   pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: true)
   set text(font: _font, size: _sz-body)
-  align(center)[
-    #text(size: _sz-bab, weight: "bold")[PRAKATA]
-  ]
+
+  heading(level: 1, numbering: none, outlined: true)[PRAKATA]
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
+
   v(_leading)
   set par(first-line-indent: 1cm, leading: _leading, spacing: _leading, justify: true)
   isi
@@ -837,10 +921,12 @@
   set par(first-line-indent: 1cm, justify: true, leading: _leading, spacing: _leading)
   set text(font: _font, size: _sz-body)
 
+  let _jenis-lower = _jenis-karya-lower(jenis-karya)
+
   {
     set par(first-line-indent: 0pt)
     align(center)[
-      *#upper("PERNYATAAN MENGENAI " + jenis-karya + linebreak() + " DAN SUMBER INFORMASI")*
+      *#upper("PERNYATAAN MENGENAI " + _jenis-lower + linebreak() + " DAN SUMBER INFORMASI")*
       *#upper("SERTA PELIMPAHAN HAK CIPTA")*
     ]
   }
@@ -848,12 +934,12 @@
   v(1em)
 
   [
-    Dengan ini saya menyatakan bahwa #jenis-karya dengan judul
+    Dengan ini saya menyatakan bahwa #_jenis-lower dengan judul
     "#judul" adalah karya saya dengan arahan dari dosen pembimbing dan belum
     diajukan dalam bentuk apa pun kepada perguruan tinggi mana pun. Sumber
     informasi yang berasal atau dikutip dari karya yang diterbitkan maupun
     tidak diterbitkan dari penulis lain telah disebutkan dalam teks dan
-    dicantumkan dalam Daftar Pustaka di bagian akhir #jenis-karya ini.
+    dicantumkan dalam Daftar Pustaka di bagian akhir #_jenis-lower ini.
   ]
 
   v(_leading)
@@ -895,6 +981,7 @@
   isi: [],
   kata-kunci: "",
 ) = {
+  set page(header: none)
   set par(
     leading: _leading,
     spacing: _leading,
@@ -903,7 +990,8 @@
   )
   set text(font: _font, size: _sz-body)
 
-  align(center)[*ABSTRAK*]
+  heading(level: 1, numbering: none, outlined: true)[ABSTRAK]
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
 
   v(0.5em)
 
@@ -950,6 +1038,7 @@
   isi: [],
   keywords: "",
 ) = {
+  set page(header: none)
   set par(
     leading: _leading,
     spacing: _leading,
@@ -958,7 +1047,8 @@
   )
   set text(font: _font, size: _sz-body)
 
-  align(center)[*ABSTRACT*]
+  heading(level: 1, numbering: none, outlined: true)[ABSTRACT]
+  counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
 
   v(0.5em)
 
