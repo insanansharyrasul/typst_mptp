@@ -865,7 +865,9 @@
   )
   if dekan != "" {
     diketahui-rows.push(_person(
-      [#dekan-label], dekan, dekan-nip,
+      [#dekan-label],
+      dekan,
+      dekan-nip,
       prefix: "Atau (pilih salah satu)",
     ))
     diketahui-rows.push(_sig)
@@ -887,8 +889,7 @@
     align: left + top,
     stroke: 0.5pt + gray,
     inset: (x: 0.6em, y: 0.5em),
-    [Tanggal Ujian: \ #tanggal-ujian],
-    [Tanggal Lulus: \ #tanggal-lulus],
+    [Tanggal Ujian: \ #tanggal-ujian], [Tanggal Lulus: \ #tanggal-lulus],
   )
 }
 
@@ -1221,7 +1222,7 @@
 ///
 /// Format entri: "1  Judul Tabel 1 ...... xx" (tanpa kata "Tabel" — PPKI Lampiran 12)
 #let daftar-tabel() = {
-  pagebreak(weak: true)
+  pagebreak()
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR TABEL]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
@@ -1232,12 +1233,14 @@
       let num = counter(figure.where(kind: table)).at(fig.location()).first()
       let prefix = [#num #h(0.5em)]
       let indent = measure(prefix).width
-      set par(first-line-indent: 0pt, hanging-indent: indent)
-      link(fig.location())[prefix #fig.caption.body]
-      it.fill
-      link(fig.location())[#context counter(page).at(fig.location()).first()]
+      grid(
+        columns: (indent, 1fr, auto),
+        gutter: 0.25em,
+        prefix,
+        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body] #box(width: 1fr, it.fill)],
+        align(bottom)[#link(fig.location())[#context counter(page).at(fig.location()).first()]],
+      )
     })
-    linebreak()
   }
   outline(
     title: none,
@@ -1250,7 +1253,6 @@
 ///
 /// Format entri: "1  Judul Gambar 1 ...... xx" (tanpa kata "Gambar" — PPKI Lampiran 12)
 #let daftar-gambar() = {
-  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR GAMBAR]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
@@ -1261,12 +1263,14 @@
       let num = counter(figure.where(kind: image)).at(fig.location()).first()
       let prefix = [#num #h(0.5em)]
       let indent = measure(prefix).width
-      set par(first-line-indent: 0pt, hanging-indent: indent)
-      link(fig.location())[prefix #fig.caption.body]
-      it.fill
-      link(fig.location())[#context counter(page).at(fig.location()).first()]
+      grid(
+        columns: (indent, 1fr, auto),
+        gutter: 0.25em,
+        prefix,
+        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body] #box(width: 1fr, it.fill)],
+        align(bottom)[#link(fig.location())[#context counter(page).at(fig.location()).first()]],
+      )
     })
-    linebreak()
   }
   outline(
     title: none,
@@ -1276,10 +1280,25 @@
 
 /// Membuat halaman Daftar Lampiran otomatis (opsional).
 #let daftar-lampiran() = {
-  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR LAMPIRAN]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
+  // Tampilkan hanya nomor urut (tanpa kata "Lampiran")
+  show outline.entry: it => {
+    let fig = it.element
+    layout(size => context {
+      let num = counter(figure.where(kind: "lampiran")).at(fig.location()).first()
+      let prefix = [#num #h(0.5em)]
+      let indent = measure(prefix).width
+      grid(
+        columns: (indent, 1fr, auto),
+        gutter: 0.25em,
+        prefix,
+        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body] #box(width: 1fr, it.fill)],
+        align(bottom)[#link(fig.location())[#context counter(page).at(fig.location()).first()]],
+      )
+    })
+  }
   // Lampiran dibuat sebagai figure dengan kind: "lampiran"
   outline(
     title: none,
