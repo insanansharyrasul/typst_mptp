@@ -99,6 +99,10 @@
   pembimbing: ("Nama lengkap dan gelar", "Nama lengkap dan gelar"),
   ketua: "Nama lengkap dan gelar",
   ketua-label: "Ketua Program Studi:",
+  ketua-nip: "..............................",
+  dekan: "Nama lengkap dan gelar",
+  dekan-label: "Ketua Departemen .....:",
+  dekan-nip: "..............................",
   tanggal-ujian: "DD Bulan 20XX",
   tanggal-lulus: "DD Bulan 20XX",
 )
@@ -183,7 +187,7 @@ mengambil kebijakan, kepentingan profesi maupun masyarakat pada umumnya.
 
 #figure(
   image("assets/gambar_1.png", width: 5cm),
-  caption: "Contoh gambar"
+  caption: "Contoh gambar",
 )
 
 == Manfaat

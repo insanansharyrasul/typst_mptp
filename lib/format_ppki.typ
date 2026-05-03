@@ -375,6 +375,8 @@
   // • Caption/judul tabel di ATAS tabel (PPKI Bab VI butir 6.1)
   // • Hanya tiga garis horizontal; tidak ada garis vertikal
   // • Catatan kaki tabel: Times New Roman 10pt (PPKI 6.1.1d butir 7)
+  show figure.where(kind: table): set figure(supplement: [Tabel])
+  show figure.where(kind: image): set figure(supplement: [Gambar])
   //
   // Cara membuat tabel dengan format PPKI (contoh 3 garis horizontal):
   //   #figure(
@@ -410,8 +412,7 @@
           columns: (auto, 1fr),
           column-gutter: 0.4em,
           align: top,
-          prefix,
-          it.body,
+          prefix, it.body,
         )
       }
     })
@@ -540,6 +541,7 @@
   tahun: "",
   judul-size: _sz-bab,
 ) = {
+  pagebreak(weak: true)
   set page(
     paper: "a4",
     margin: (left: 4cm, right: 3cm, top: 0pt, bottom: 0pt),
@@ -753,7 +755,7 @@
   }
 
   for (i, p) in penguji.enumerate() {
-    [#(i + 1) #h(0.5em) #p \ ]
+    [#h(2.0em) #(i + 1) #h(0.5em) #p \ ]
   }
 
   if subtitle2 != "" {
@@ -767,19 +769,22 @@
 /// (PPKI Lampiran 16 butir 4, Lampiran 9a-9e).
 ///
 /// Parameter:
-///   judul        - Judul karya ilmiah
-///   nama         - Nama penulis
-///   nim          - NIM
-///   jenis-karya  - "skripsi" | "tesis" | "disertasi" | "laporan akhir"
+///   judul          - Judul karya ilmiah
+///   nama           - Nama penulis
+///   nim            - NIM
+///   jenis-karya    - "skripsi" | "tesis" | "disertasi" | "laporan akhir"
 ///   program-studi
-///   pembimbing   - Array nama pembimbing, mis. ("Dr A", "Dr B")
-///   ketua        - Nama ketua departemen/program studi yang menandatangani
-///   ketua-label  - Label jabatan ketua, mis.:
-///                    "Ketua Program Studi Ilmu Komputer:"  (default untuk skripsi)
-///                    "Ketua Departemen Ilmu Komputer:"     (pilihan lain untuk skripsi)
-///                    "Ketua Program Studi:"                (untuk tesis/disertasi)
-///   dekan        - Nama dekan (opsional; untuk laporan akhir, tesis, disertasi)
-///   dekan-label  - Label jabatan dekan (default: "Dekan Fakultas/Sekolah:")
+///   pembimbing     - Array nama pembimbing, mis. ("Dr A", "Dr B")
+///   pembimbing-nip - Array NIP pembimbing, paralel dengan `pembimbing` (opsional)
+///   ketua          - Nama ketua departemen/program studi yang menandatangani
+///   ketua-label    - Label jabatan ketua, mis.:
+///                      "Ketua Program Studi:"           (default untuk skripsi)
+///                      "Ketua Departemen Ilmu Komputer:"
+///   ketua-nip      - NIP ketua (opsional)
+///   dekan          - Nama penanda tangan alternatif (opsional). Jika diisi, ditampilkan
+///                    sebagai pilihan kedua dengan prefiks italic "Atau (pilih salah satu)".
+///   dekan-label    - Label jabatan alternatif (default: "Ketua Departemen .....:")
+///   dekan-nip      - NIP alternatif (opsional)
 ///   tanggal-ujian
 ///   tanggal-lulus
 #let lembar-pengesahan(
@@ -789,10 +794,13 @@
   jenis-karya: "skripsi",
   program-studi: "",
   pembimbing: (),
+  pembimbing-nip: (),
   ketua: "",
-  ketua-label: "Ketua Program Studi",
+  ketua-label: "Ketua Program Studi:",
+  ketua-nip: "",
   dekan: "",
-  dekan-label: "Dekan Fakultas/Sekolah:",
+  dekan-label: "Ketua Departemen .....:",
+  dekan-nip: "",
   tanggal-ujian: "",
   tanggal-lulus: "",
 ) = {
@@ -811,47 +819,77 @@
     [NIM], [ : ], [#nim],
   )
 
-  v(7em)
+  v(1.5em)
 
+  // Garis tanda tangan, rata kanan-bawah dalam sel
+  let _sig = align(right + bottom, line(length: 6cm, stroke: 0.75pt))
+
+  // Blok identitas penanda tangan: label, lalu nama (dan NIP) menjorok 1 em.
+  // `prefix` opsional ditampilkan miring di atas label (mis. "Atau (pilih salah satu)").
+  let _person(label, name, nip, prefix: none) = {
+    set par(first-line-indent: 0pt)
+    if prefix != none [#emph(prefix) \ ]
+    [#label \ #h(1em)#name]
+    if nip != "" [ \ #h(1em)NIP #nip]
+  }
+
+  // ── Disetujui oleh ──
   align(center)[Disetujui oleh]
+  v(0.3em)
 
-  // Pembimbing (1 atau 2 orang): nama digarisbawahi, label di bawah
+  let pembimbing-rows = ()
   for (i, p) in pembimbing.enumerate() {
-    v(7.5em)
-    align(center)[
-      #underline[#p] \
-      Pembimbing#if pembimbing.len() > 1 [ #(i + 1)]
-    ]
+    let label = if pembimbing.len() > 1 [Pembimbing #(i + 1):] else [Pembimbing:]
+    let nip = if i < pembimbing-nip.len() { pembimbing-nip.at(i) } else { "" }
+    pembimbing-rows.push(_person(label, p, nip))
+    pembimbing-rows.push(_sig)
   }
 
-  v(2em)
+  table(
+    columns: (1fr, 7cm),
+    align: (left + top, right + bottom),
+    stroke: 0.5pt + gray,
+    inset: (x: 0.6em, y: 0.8em),
+    ..pembimbing-rows,
+  )
 
+  v(1.5em)
+
+  // ── Diketahui oleh ──
   align(center)[Diketahui oleh]
+  v(0.3em)
 
-  v(8.5em)
-
-  align(center)[
-    #underline[#ketua] \
-    #ketua-label
-  ]
-
+  let diketahui-rows = (
+    _person([#ketua-label], ketua, ketua-nip),
+    _sig,
+  )
   if dekan != "" {
-    v(2.5em)
-    align(center)[
-      #underline[#dekan] \
-      #dekan-label
-    ]
+    diketahui-rows.push(_person(
+      [#dekan-label], dekan, dekan-nip,
+      prefix: "Atau (pilih salah satu)",
+    ))
+    diketahui-rows.push(_sig)
   }
 
-  v(5em)
+  table(
+    columns: (1fr, 7cm),
+    align: (left + top, right + bottom),
+    stroke: 0.5pt + gray,
+    inset: (x: 0.6em, y: 0.8em),
+    ..diketahui-rows,
+  )
 
-  if tanggal-ujian != "" {
-    [Tanggal Ujian: #tanggal-ujian]
-  }
-  if tanggal-lulus != "" {
-    if tanggal-ujian != "" { v(_leading) }
-    [Tanggal Lulus: #tanggal-lulus]
-  }
+  // ── Tanggal Ujian / Tanggal Lulus, didorong ke bawah halaman ──
+  v(1fr)
+
+  table(
+    columns: (1fr, 1fr),
+    align: left + top,
+    stroke: 0.5pt + gray,
+    inset: (x: 0.6em, y: 0.5em),
+    [Tanggal Ujian: \ #tanggal-ujian],
+    [Tanggal Lulus: \ #tanggal-lulus],
+  )
 }
 
 
@@ -918,6 +956,7 @@
   jenis-karya: "skripsi",
   tanggal: "",
 ) = {
+  pagebreak(weak: true)
   set par(first-line-indent: 1cm, justify: true, leading: _leading, spacing: _leading)
   set text(font: _font, size: _sz-body)
 
@@ -981,6 +1020,7 @@
   isi: [],
   kata-kunci: "",
 ) = {
+  pagebreak(weak: true)
   set page(header: none)
   set par(
     leading: _leading,
@@ -1089,6 +1129,7 @@
   isi: [],
   kata-kunci: "",
 ) = {
+  pagebreak(weak: true)
   set par(leading: _leading, spacing: _leading, first-line-indent: 0pt, justify: true)
   set text(font: _font, size: _sz-body)
 
@@ -1123,6 +1164,7 @@
   isi: [],
   keywords: "",
 ) = {
+  pagebreak(weak: true)
   set par(leading: _leading, spacing: _leading, first-line-indent: 0pt, justify: true)
   set text(font: _font, size: _sz-body)
 
@@ -1179,19 +1221,22 @@
 ///
 /// Format entri: "1  Judul Tabel 1 ...... xx" (tanpa kata "Tabel" — PPKI Lampiran 12)
 #let daftar-tabel() = {
+  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR TABEL]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   // Tampilkan hanya nomor urut (tanpa kata "Tabel") sesuai Lampiran 12
   show outline.entry: it => {
     let fig = it.element
-    link(fig.location())[
-      #context counter(figure.where(kind: table)).at(fig.location()).first()
-      #h(0.5em)
-      #fig.caption.body
-    ]
-    it.fill
-    link(fig.location())[#context counter(page).at(fig.location()).first()]
+    layout(size => context {
+      let num = counter(figure.where(kind: table)).at(fig.location()).first()
+      let prefix = [#num #h(0.5em)]
+      let indent = measure(prefix).width
+      set par(first-line-indent: 0pt, hanging-indent: indent)
+      link(fig.location())[prefix #fig.caption.body]
+      it.fill
+      link(fig.location())[#context counter(page).at(fig.location()).first()]
+    })
     linebreak()
   }
   outline(
@@ -1205,19 +1250,22 @@
 ///
 /// Format entri: "1  Judul Gambar 1 ...... xx" (tanpa kata "Gambar" — PPKI Lampiran 12)
 #let daftar-gambar() = {
+  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR GAMBAR]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
   // Tampilkan hanya nomor urut (tanpa kata "Gambar") sesuai Lampiran 12
   show outline.entry: it => {
     let fig = it.element
-    link(fig.location())[
-      #context counter(figure.where(kind: image)).at(fig.location()).first()
-      #h(0.5em)
-      #fig.caption.body
-    ]
-    it.fill
-    link(fig.location())[#context counter(page).at(fig.location()).first()]
+    layout(size => context {
+      let num = counter(figure.where(kind: image)).at(fig.location()).first()
+      let prefix = [#num #h(0.5em)]
+      let indent = measure(prefix).width
+      set par(first-line-indent: 0pt, hanging-indent: indent)
+      link(fig.location())[prefix #fig.caption.body]
+      it.fill
+      link(fig.location())[#context counter(page).at(fig.location()).first()]
+    })
     linebreak()
   }
   outline(
@@ -1228,6 +1276,7 @@
 
 /// Membuat halaman Daftar Lampiran otomatis (opsional).
 #let daftar-lampiran() = {
+  pagebreak(weak: true)
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading)
   heading(level: 1, numbering: none, outlined: true)[DAFTAR LAMPIRAN]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
