@@ -848,7 +848,7 @@
   table(
     columns: (1fr, 7cm),
     align: (left + top, right + bottom),
-    stroke: 0.5pt + gray,
+    stroke: 0pt,
     inset: (x: 0.6em, y: 0.8em),
     ..pembimbing-rows,
   )
@@ -876,7 +876,7 @@
   table(
     columns: (1fr, 7cm),
     align: (left + top, right + bottom),
-    stroke: 0.5pt + gray,
+    stroke: 0pt,
     inset: (x: 0.6em, y: 0.8em),
     ..diketahui-rows,
   )
