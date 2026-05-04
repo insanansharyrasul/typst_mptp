@@ -887,7 +887,7 @@
   table(
     columns: (1fr, 1fr),
     align: left + top,
-    stroke: 0.5pt + gray,
+    stroke: 0pt,
     inset: (x: 0.6em, y: 0.5em),
     [Tanggal Ujian: \ #tanggal-ujian], [Tanggal Lulus: \ #tanggal-lulus],
   )
