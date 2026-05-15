@@ -2,6 +2,35 @@
 
 Template [Typst](https://typst.app) untuk penulisan karya ilmiah tugas akhir mahasiswa IPB, sesuai **Pedoman Penulisan Karya Ilmiah (PPKI) Edisi ke-4** (IPB Press, Desember 2019).
 
+## Quick start (beginner)
+
+1. Edit `config.typ` untuk judul, nama, dan isi bagian awal.
+2. Tulis isi bab di folder `chapters/` (satu file per bab).
+3. Jika perlu, ubah lampiran dan riwayat hidup di folder `appendices/`.
+4. Kompilasi `main.typ`.
+
+Struktur proyek yang baru:
+
+```
+typst_mptp/
+├── main.typ
+├── config.typ
+├── front.typ
+├── back.typ
+├── chapters/
+│   ├── 01-pendahuluan.typ
+│   ├── 02-tinjauan-pustaka.typ
+│   ├── 03-metode.typ
+│   ├── 04-hasil-pembahasan.typ
+│   └── 05-simpulan-saran.typ
+├── appendices/
+│   ├── lampiran.typ
+│   └── riwayat-hidup.typ
+├── assets/
+├── lib/
+└── reference.bib
+```
+
 ---
 
 ## Prasyarat

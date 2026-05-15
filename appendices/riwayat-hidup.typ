@@ -1,0 +1,16 @@
+#import "../lib/format_ppki.typ": *
+
+#let riwayat_hidup_content() = [
+  #riwayat-hidup[
+    Penulis dilahirkan di kota .... pada tanggal bulan tahun sebagai anak ke ... dari
+    pasangan bapak ... dan ibu .... Pendidikan sekolah menengah atas (SMA) ditempuh
+    di sekolah ..., dan lulus pada tahun .... Pada tahun ..., penulis diterima
+    sebagai mahasiswa program sarjana (S-1) di Program Studi/Fakultas/Sekolah ... di
+    IPB.
+
+    Selama mengikuti program S-1, penulis aktif menjadi ... (riwayat dan pengalaman
+    organisasi, asisten akademik, dan sebagainya). Penulis juga pernah mengikuti
+    lomba karya ... (riwayat kegiatan ilmiah) memperoleh atau pernah terpilih sebagai
+    ... (riwayat prestasi akademik).
+  ]
+]
