@@ -50,34 +50,72 @@ typst_mptp/
 
 ```
 proyek-skripsi/
+├── main.typ
+├── config.typ
+├── front.typ
+├── back.typ
+├── chapters/
+│   ├── 01-pendahuluan.typ
+│   ├── 02-tinjauan-pustaka.typ
+│   ├── 03-metode.typ
+│   ├── 04-hasil-pembahasan.typ
+│   └── 05-simpulan-saran.typ
+├── appendices/
+│   ├── lampiran.typ
+│   └── riwayat-hidup.typ
+├── assets/
 ├── lib/
-│   ├── format_ppki.typ   ← salin file ini
-│   └── ipb.csl           ← salin file ini
-├── assets/               ← untuk gambar/logo
-├── reference/
-│   └── reference.bib     ← data referensi
-└── main.typ              ← file utama Anda
+│   ├── format_ppki.typ
+│   └── ipb.csl
+└── reference.bib
 ```
 
-### 2. Impor di file utama
+### 2. Isi metadata di config.typ
+
+```typst
+#let cfg = (
+  judul: "Judul Karya Ilmiah Anda",
+  nama: "Nama Lengkap Penulis",
+  nim: "NXXXXXXXXX",
+  jenis_karya: "skripsi",          // "laporan-akhir" | "skripsi" | "tesis" | "disertasi"
+  program_studi: "Nama Program Studi",
+  departemen: "",                  // kosongkan jika tidak ada
+  fakultas: "Nama Fakultas",
+  tahun: "2024",
+)
+```
+
+### 3. Tulis isi bab dan lampiran
+
+- Bab ada di `chapters/`.
+- Lampiran dan riwayat hidup ada di `appendices/`.
+
+### 4. Entry point (main.typ)
+
+`main.typ` sudah berisi wiring; biasanya tidak perlu diubah. Strukturnya:
 
 ```typst
 #import "lib/format_ppki.typ": *
-```
+#import "config.typ": cfg
+#import "front.typ": front_matter
+#import "chapters/01-pendahuluan.typ": bab_pendahuluan
+#import "back.typ": back_matter
 
-### 3. Aktifkan format PPKI
-
-```typst
 #show: ppki.with(
-  judul:         "Judul Karya Ilmiah Anda",
-  nama-penulis:  "Nama Lengkap Penulis",
-  nim:           "NXXXXXXXXX",
-  jenis-karya:   "skripsi",          // "laporan-akhir" | "skripsi" | "tesis" | "disertasi"
-  program-studi: "Nama Program Studi",
-  departemen:    "Nama Departemen",  // kosongkan ("") jika tidak ada
-  fakultas:      "Nama Fakultas",
-  tahun:         "2024",
+  judul: cfg.judul,
+  nama-penulis: cfg.nama,
+  nim: cfg.nim,
+  jenis-karya: cfg.jenis_karya,
+  program-studi: cfg.program_studi,
+  departemen: cfg.departemen,
+  fakultas: cfg.fakultas,
+  tahun: cfg.tahun,
 )
+
+#front_matter(cfg)
+#show: bagian-isi
+#bab_pendahuluan()
+#back_matter(cfg)
 ```
 
 ---
@@ -109,165 +147,55 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 | 12     | Daftar gambar (jika gambar > 1)| `#daftar-gambar()`           |
 | 13     | Daftar lampiran (jika ada)     | `#daftar-lampiran()`         |
 
-### Contoh Lengkap
+### Contoh Minimal (modular)
+
+`main.typ`:
 
 ```typst
-#import "lib/format_ppki.typ": *
+#import "config.typ": cfg
+#import "front.typ": front_matter
+#import "chapters/01-pendahuluan.typ": bab_pendahuluan
+#import "back.typ": back_matter
 
 #show: ppki.with(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama-penulis:  "Budi Santoso",
-  nim:           "A1234567",
-  jenis-karya:   "skripsi",
-  program-studi: "Agronomi dan Hortikultura",
-  departemen:    "Agronomi dan Hortikultura",
-  fakultas:      "Fakultas Pertanian",
-  tahun:         "2024",
+  judul: cfg.judul,
+  nama-penulis: cfg.nama,
+  nim: cfg.nim,
+  jenis-karya: cfg.jenis_karya,
+  program-studi: cfg.program_studi,
+  departemen: cfg.departemen,
+  fakultas: cfg.fakultas,
+  tahun: cfg.tahun,
 )
 
-// ── BAGIAN AWAL ──────────────────────────────────────────────
-#show: bagian-awal
-
-#halaman-sampul(
-  judul:         "PENGARUH PUPUK ORGANIK TERHADAP PERTUMBUHAN PADI",
-  nama:          "BUDI SANTOSO",
-  nim:           "A1234567",
-  program-studi: "AGRONOMI DAN HORTIKULTURA",
-  departemen:    "AGRONOMI DAN HORTIKULTURA",
-  fakultas:      "Fakultas Pertanian",
-  tahun:         "2024",
-  logo:          image("assets/logo-ipb.png", width: 2.5cm),
-)
-
-#halaman-pernyataan(
-  nama:        "BUDI SANTOSO",
-  nim:         "A1234567",
-  judul:       "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  jenis-karya: "skripsi",
-  tanggal:     "Bogor, Januari 2024",
-)
-
-#abstrak(
-  nama:       "BUDI SANTOSO",
-  judul:      "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  pembimbing: ("Ahmad Rifai", "Siti Maryam"),
-  isi:        [Narasi abstrak maks. 200 kata, satu paragraf. Memuat latar
-               belakang, tujuan, metode, hasil, dan implikasi.],
-  kata-kunci: "kata1, kata2, kata3",  // maks. 5, terurut abjad
-)
-
-#abstract-en(
-  nama:       "BUDI SANTOSO",
-  judul:      "Effect of Organic Fertilizer on Rice Growth",
-  pembimbing: ("Ahmad Rifai", "Siti Maryam"),
-  isi:        [Abstract narrative, max 200 words, one paragraph.],
-  keywords:   "keyword1, keyword2, keyword3",
-)
-
-#halaman-hak-cipta(tahun: "2024")
-
-#halaman-judul-dalam(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama:          "BUDI SANTOSO",
-  nim:           "A1234567",
-  jenis-karya:   "skripsi",
-  program-studi: "AGRONOMI DAN HORTIKULTURA",
-  departemen:    "AGRONOMI DAN HORTIKULTURA",
-  fakultas:      "Fakultas Pertanian",
-  tahun:         "2024",
-)
-
-#halaman-penguji(
-  penguji: ("Dr. Nama Penguji, M.Si.", "Dr. Nama Penguji 2, M.Si."),
-  judul:   "Tim Penguji pada Ujian Skripsi:",
-)
-
-#lembar-pengesahan(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama:          "Budi Santoso",
-  nim:           "A1234567",
-  jenis-karya:   "skripsi",
-  program-studi: "Agronomi dan Hortikultura",
-  pembimbing:    ("Dr. Ahmad Rifai, M.Si.", "Dr. Siti Maryam, M.Sc."),
-  ketua:         "Prof. Dr. Ketua Program Studi, M.Si.",
-  ketua-label:   "Ketua Program Studi Agronomi dan Hortikultura:",
-  tanggal-ujian: "1 Januari 2024",
-  tanggal-lulus: "15 Januari 2024",
-)
-
-#prakata[
-  Puji dan syukur penulis panjatkan kepada Allah subhanaahu wa ta'ala atas segala
-  karunia-Nya sehingga karya ilmiah ini berhasil diselesaikan. …
-
-  #v(1em)
-  #align(right)[
-    Bogor, Januari 2024
-    #v(2em)
-    _Budi Santoso_
-  ]
-]
-
-#daftar-isi()
-#daftar-tabel()    // hapus jika tabel ≤ 1
-#daftar-gambar()   // hapus jika gambar ≤ 1
-#daftar-lampiran() // hapus jika tidak ada lampiran
-
-// ── BAGIAN ISI ───────────────────────────────────────────────
+#front_matter(cfg)
 #show: bagian-isi
+#bab_pendahuluan()
+#back_matter(cfg)
+```
 
+`config.typ`:
+
+```typst
+#let cfg = (
+  judul: "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
+  nama: "Budi Santoso",
+  nim: "A1234567",
+  jenis_karya: "skripsi",
+  program_studi: "Agronomi dan Hortikultura",
+  departemen: "Agronomi dan Hortikultura",
+  fakultas: "Fakultas Pertanian",
+  tahun: "2024",
+)
+```
+
+`chapters/01-pendahuluan.typ`:
+
+```typst
+#let bab_pendahuluan() = [
 = PENDAHULUAN
-
 == Latar Belakang
-
-Paragraf pertama dimulai di sini …
-
-== Rumusan Masalah
-
-...
-
-== Tujuan Penelitian
-
-...
-
-= TINJAUAN PUSTAKA
-
-...
-
-= METODE
-
-== Waktu dan Tempat
-
-...
-
-= HASIL DAN PEMBAHASAN
-
-== Hasil
-
-...
-
-== Pembahasan
-
-...
-
-= SIMPULAN DAN SARAN
-
-== Simpulan
-
-...
-
-== Saran
-
-...
-
-#daftar-pustaka("reference/reference.bib", style: "ipb.csl")
-
-#lampiran[
-  // Konten lampiran di sini
-]
-
-#riwayat-hidup[
-  Penulis dilahirkan di Bogor pada tanggal 1 Januari 2000 sebagai
-  anak pertama dari pasangan Bapak Ahmad dan Ibu Sari. …
+Paragraf pertama dimulai di sini ...
 ]
 ```
 
@@ -325,8 +253,7 @@ proyek-skripsi/
 │   ├── format_ppki.typ
 │   └── ipb.csl           ← gaya sitasi IPB
 ├── assets/
-├── reference/
-│   └── reference.bib     ← data referensi
+├── reference.bib         ← data referensi
 └── main.typ
 ```
 
@@ -368,7 +295,7 @@ Hasil penelitian sebelumnya menunjukkan peningkatan hasil panen @smith2020.
 ### Memanggil daftar pustaka
 
 ```typst
-#daftar-pustaka("reference/reference.bib", style: "ipb.csl")
+#daftar-pustaka("reference.bib", style: "lib/ipb.csl")
 ```
 
 Hanya referensi yang disitasi dalam teks yang akan muncul di daftar pustaka.
