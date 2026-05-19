@@ -930,7 +930,7 @@
   set par(first-line-indent: 0pt, leading: _leading, spacing: _leading, justify: true)
   set text(font: _font, size: _sz-body)
 
-  heading(level: 1, numbering: none, outlined: true)[PRAKATA]
+  heading(level: 1, numbering: none, outlined: false)[PRAKATA]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
 
   v(_leading)
@@ -1031,7 +1031,7 @@
   )
   set text(font: _font, size: _sz-body)
 
-  heading(level: 1, numbering: none, outlined: true)[ABSTRAK]
+  heading(level: 1, numbering: none, outlined: false)[ABSTRAK]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
 
   v(0.5em)
@@ -1088,7 +1088,7 @@
   )
   set text(font: _font, size: _sz-body)
 
-  heading(level: 1, numbering: none, outlined: true)[ABSTRACT]
+  heading(level: 1, numbering: none, outlined: false)[ABSTRACT]
   counter(heading).update((ch, ..rest) => (calc.max(0, ch - 1),))
 
   v(0.5em)
