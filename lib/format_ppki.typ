@@ -754,6 +754,8 @@
     v(_leading)
   }
 
+  let penguji = if type(penguji) == str { (penguji,) } else { penguji }
+
   for (i, p) in penguji.enumerate() {
     [#h(2.0em) #(i + 1) #h(0.5em) #p \ ]
   }
