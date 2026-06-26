@@ -52,7 +52,7 @@
     faktual. Tidak diperbolehkan mengacu pustaka, gambar, dan tabel. Singkatan hanya
     dikenalkan jika masih digunakan lagi dalam bagian lain Abstrak/_Abstract_.
   ],
-  kata-kunci: "ditulis dalam bahasa Indonesia, disusun berdasarkan abjad, maksimum lima kata atau frasa",
+  kata-kunci: [ditulis dalam bahasa Indonesia, disusun berdasarkan abjad, maksimum lima kata atau frasa ini],
 )
 
 #abstract-en(
@@ -68,7 +68,7 @@
     not permitted. Abbreviations are only introduced if used again in other
     parts of the Abstract/_Abstract_.
   ],
-  keywords: "written in English, arranged alphabetically, maximum five words or phrases",
+  keywords: [written in English, arranged alphabetically, maximum five words or phrases],
 )
 
 #halaman-hak-cipta(tahun: "20XX")
