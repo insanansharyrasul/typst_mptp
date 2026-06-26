@@ -1036,6 +1036,8 @@
 
   v(0.5em)
 
+  let pembimbing = if type(pembimbing) == str { (pembimbing,) } else { pembimbing }
+
   // Format nama pembimbing: dipisah "dan" jika lebih dari satu
   let db = if pembimbing.len() == 0 {
     ""
@@ -1093,6 +1095,8 @@
 
   v(0.5em)
 
+  let pembimbing = if type(pembimbing) == str { (pembimbing,) } else { pembimbing }
+
   let sv = if pembimbing.len() == 0 {
     ""
   } else if pembimbing.len() == 1 {
@@ -1138,6 +1142,8 @@
 
   v(0.5em)
 
+  let pembimbing = if type(pembimbing) == str { (pembimbing,) } else { pembimbing }
+
   let db = if pembimbing.len() == 0 {
     ""
   } else if pembimbing.len() == 1 {
@@ -1172,6 +1178,8 @@
   align(center)[*SUMMARY*]
 
   v(0.5em)
+
+  let pembimbing = if type(pembimbing) == str { (pembimbing,) } else { pembimbing }
 
   let sv = if pembimbing.len() == 0 {
     ""
