@@ -1,48 +1,66 @@
 #import "lib/format_ppki.typ": *
 
+// -- GLOBAL VARIABLE
+
+// Please fill this with title case like this (not capslock!)
+#let judul_indonesia = "Judul Karya Ilmiah Maksimum Tiga Baris, Lima Belas Kata Tidak Termasuk Kata Depan Dan Kata Sambung"
+#let judul_english = "Title of Thesis (skripsi)"
+#let nim = "NXXXXXXXXXX" 
+#let nama-penulis = "Insan Anshary Rasul"
+#let program-studi = "Program Studi"
+#let fakultas = "Nama Fakultas/Sekolah"
+
+// The date time of your paper is made
+#let date = datetime(year: 2026, month: 6, day: 30)
+#let bulan = bulan-id.at(date.month() - 1)
+
+
+
+
+
 #show: ppki.with(
-  judul: "Judul Karya Ilmiah Maksimum Tiga Baris, Lima Belas Kata Tidak Termasuk Kata Depan Dan Kata Sambung",
-  nama-penulis: "Nama Lengkap",
-  nim: "NXXXXXXXXX",
-  program-studi: "Program Studi",
-  fakultas: "Nama Fakultas/Sekolah",
-  tahun: "20XX",
+  judul: judul_indonesia,
+  nama-penulis: nama-penulis,
+  nim: nim,
+  program-studi: program-studi,
+  fakultas: fakultas,
+  tahun: date.year(),
   jenis-karya: "skripsi",
 )
 
 #halaman-sampul(
-  judul: "JUDUL KARYA ILMIAH MAKSIMUM TIGA BARIS, LIMA BELAS KATA TIDAK TERMASUK KATA DEPAN DAN KATA SAMBUNG",
-  nama: "NAMA LENGKAP",
-  nim: "NXXXXXXXXX",
-  program-studi: "PROGRAM STUDI",
-  fakultas: "Nama Fakultas/Sekolah",
-  tahun: "20XX",
+  judul: judul_indonesia,
+  nama: nama-penulis,
+  nim: nim,
+  program-studi: program-studi,
+  fakultas: fakultas,
+  tahun: date.year(),
   logo: image("assets/logo-ipb.png", width: 2.5cm),
 )
 
 #halaman-judul(
-  judul: "JUDUL KARYA ILMIAH MAKSIMUM TIGA BARIS, LIMA BELAS KATA TIDAK TERMASUK KATA DEPAN DAN KATA SAMBUNG",
-  nama: "NAMA LENGKAP",
-  nim: "NXXXXXXXXX",
-  program-studi: "PROGRAM STUDI",
-  fakultas: "Nama Fakultas/Sekolah",
-  tahun: "20XX",
+  judul: judul_indonesia,
+  nama: nama-penulis,
+  nim: nim,
+  program-studi: program-studi,
+  fakultas: fakultas,
+  tahun: date.year(),
 )
 
 #halaman-pernyataan(
-  nama: "NAMA LENGKAP",
-  nim: "NXXXXXXXXX",
-  judul: "Judul Karya Ilmiah Tugas Akhir",
+  nama-penulis: nama-penulis,
+  nim: nim,
+  judul: judul_indonesia,
   jenis-karya: "skripsi",
-  tanggal: "Bogor, Bulan Tahun 20XX",
+  tanggal: [Bogor, #bulan #date.year()],
 )
 
 // ── Bagian Awal (nomor halaman Romawi: i, ii, iii, …) ──
 #show: bagian-awal
 
 #abstrak(
-  nama: "NAMA MAHASISWA",
-  judul: "Judul Skripsi dalam Bahasa Indonesia",
+  nama: nama-penulis,
+  judul: judul_indonesia,
   pembimbing: ("NAMA PEMBIMBING 1", "NAMA PEMBIMBING 2"),
   isi: [
     Narasi disusun dalam satu paragraf, isi tidak lebih dari 200 kata, dan ditulis
@@ -56,8 +74,8 @@
 )
 
 #abstract-en(
-  nama: "STUDENT NAME",
-  judul: "Title of Thesis (skripsi)",
+  nama: nama-penulis,
+  judul: judul_english,
   pembimbing: ("NAME of 1st SUPERVISOR", "NAME of 2nd SUPERVISOR"),
   isi: [
     Narrative is written in a single paragraph, no more than 200 words, and
@@ -71,16 +89,16 @@
   keywords: [written in English, arranged alphabetically, maximum five words or phrases],
 )
 
-#halaman-hak-cipta(tahun: "20XX")
+#halaman-hak-cipta(tahun: date.year())
 
 #halaman-judul-dalam(
-  judul: "Judul Karya Ilmiah Maksimum Tiga Baris, Lima Belas Kata Tidak Termasuk Kata Depan Dan Kata Sambung",
-  nama: "NAMA LENGKAP",
-  nim: "NXXXXXXXXX",
+  judul: judul_indonesia,
+  nama: nama-penulis,
+  nim: nim,
   jenis-karya: "skripsi",
-  program-studi: "PROGRAM STUDI",
-  fakultas: "Nama Fakultas/Sekolah",
-  tahun: "20XX",
+  program-studi: program-studi,
+  fakultas: fakultas,
+  tahun: date.year(),
 )
 
 #halaman-penguji(
@@ -91,11 +109,11 @@
 
 
 #lembar-pengesahan(
-  judul: "Judul Karya Ilmiah Maksimum Tiga Baris, Lima Belas Kata Tidak Termasuk Kata Depan Dan Kata Sambung",
-  nama: "Nama Lengkap",
-  nim: "NXXXXXXXXX",
+  judul: judul_indonesia,
+  nama-penulis: nama-penulis,
+  nim: nim,
   jenis-karya: "skripsi",
-  program-studi: "Program Studi",
+  program-studi: program-studi,
   pembimbing: ("Nama lengkap dan gelar", "Nama lengkap dan gelar"),
   ketua: "Nama lengkap dan gelar",
   ketua-label: "Ketua Program Studi:",
@@ -103,16 +121,15 @@
   dekan: "Nama lengkap dan gelar",
   dekan-label: "Ketua Departemen .....:",
   dekan-nip: "..............................",
-  tanggal-ujian: "DD Bulan 20XX",
-  tanggal-lulus: "DD Bulan 20XX",
+  tanggal-ujian: [#bulan #date.year()],
+  tanggal-lulus: [#bulan #date.year()],
 )
 
 #prakata[
   Puji dan syukur penulis panjatkan kepada Allah subhanaahu wa ta'ala atas segala
   karunia-Nya sehingga karya ilmiah ini berhasil diselesaikan. Tema yang dipilih
-  dalam penelitian yang dilaksanakan sejak bulan .... 20XX sampai bulan .... 20XX ini
-  ialah .........., dengan judul "..........................................
-  ............................................".
+  dalam penelitian yang dilaksanakan sejak bulan .... sampai bulan ....  ini
+  ialah .........., dengan judul "#judul_indonesia".
 
   Terima kasih penulis ucapkan kepada para pembimbing, ... (nama lengkap dan gelar)
   yang telah membimbing dan banyak memberi saran. Ucapan terima kasih juga

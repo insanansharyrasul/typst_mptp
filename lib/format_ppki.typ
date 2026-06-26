@@ -472,6 +472,8 @@
   set par(leading: _leading, first-line-indent: 0pt, justify: false)
   set align(center)
 
+  let tahun = str(tahun)
+
   // ±5 cm dari atas kertas → judul
   v(5cm)
 
@@ -483,7 +485,7 @@
   v(5.5cm)
 
   // Nama: Times New Roman 14pt
-  text(weight: "bold")[#nama]
+  text(weight: "bold")[#upper(nama)]
 
   // ±18 cm dari atas kertas → logo (jarak 6 cm dari nama)
   v(5cm)
@@ -556,8 +558,10 @@
   v(5cm)
   text(size: judul-size, weight: "bold")[#upper(judul)]
   v(5.5cm)
-  text(weight: "bold")[#nama]
+  text(weight: "bold")[#upper(nama)]
   v(5cm)
+
+  let tahun = str(tahun)
 
   // No logo for white-paper copy
 
@@ -624,6 +628,8 @@
   set text(font: _font, size: _sz-bab)
   set par(leading: _leading, first-line-indent: 0pt, justify: false)
 
+  let tahun = str(tahun)
+
   let _gelar = if gelar != "" { gelar } else if jenis-karya == "laporan-akhir" {
     "Ahli Madya"
   } else if jenis-karya == "tesis" {
@@ -641,7 +647,7 @@
     #v(5cm)
     #text(weight: "bold")[#upper(judul)]
     #v(4.5cm)
-    #text(weight: "bold")[#nama]
+    #text(weight: "bold")[#upper(nama)]
   ]
 
   // ── Kalimat syarat memperoleh gelar ────────────────
@@ -791,7 +797,7 @@
 ///   tanggal-lulus
 #let lembar-pengesahan(
   judul: "",
-  nama: "",
+  nama-penulis: "",
   nim: "",
   jenis-karya: "skripsi",
   program-studi: "",
@@ -817,7 +823,7 @@
     columns: (auto, 1em, 1fr),
     row-gutter: 0.4em,
     [Judul #_jenis-label], [ : ], [#judul],
-    [Nama], [ : ], [#nama],
+    [Nama], [ : ], [#nama-penulis],
     [NIM], [ : ], [#nim],
   )
 
@@ -953,7 +959,7 @@
 ///   jenis-karya - "laporan akhir" | "skripsi" | "tesis" | "disertasi"
 ///   tanggal     - Tempat dan tanggal tanda tangan, mis. "Bogor, Januari 2024"
 #let halaman-pernyataan(
-  nama: "",
+  nama-penulis: "",
   nim: "",
   judul: "",
   jenis-karya: "skripsi",
@@ -996,8 +1002,8 @@
   align(right)[
     #tanggal
     #v(3em)
-    #nama \
-    NIM #nim
+    #nama-penulis \
+    #nim
   ]
 }
 
@@ -1442,3 +1448,11 @@
 // -------------------------------------------------------
 // Times New Roman 10pt atau Arial 9pt:
 //   #set text(size: 10pt) [Keterangan: xxx]
+
+
+// -- GLOBAL VARIABLE
+
+#let bulan-id = (
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+)
