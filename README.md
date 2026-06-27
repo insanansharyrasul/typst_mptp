@@ -6,7 +6,10 @@ Template [Typst](https://typst.app) untuk penulisan karya ilmiah tugas akhir mah
 
 ## Prasyarat
 
-- [Typst](https://typst.app) versi 0.11 ke atas
+- [Typst](https://typst.app) versi 0.11 ke atas 
+  - Project ini dibuat berdasarkan versi `typst 0.15.0 (3ae52774)` 
+  - Tinymist yang digunakan versi `0.15.2`
+  - *Last update: 2026-06-27*
 - Font **Times New Roman** (dibutuhkan oleh PPKI)
   ```bash
   # Ubuntu / Debian
