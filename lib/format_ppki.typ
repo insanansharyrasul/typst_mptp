@@ -1222,14 +1222,24 @@
     #text(font: _font, size: _sz-bab, weight: "bold")[DAFTAR ISI]
   ]
   v(2 * _leading)
-  // Tambah before 6pt sebelum setiap entri bab (level 1)
-  show outline.entry.where(level: 1): it => {
-    v(6pt, weak: true)
-    it
+  show outline.entry: it => {
+    if it.level == 1 { v(6pt, weak: true) }
+    let prefix = it.prefix()
+    grid(
+      columns: (1fr, auto),
+      column-gutter: 0.5em,
+      {
+        h((it.level - 1) * 1cm)
+        link(it.element.location())[
+          #if prefix != none { prefix; h(0.5em) }
+          #it.body()
+        ]
+      },
+      align(right + bottom, link(it.element.location())[#it.page()]),
+    )
   }
   outline(
     title: none,
-    indent: 1cm,
     depth: 2
   )
 }
@@ -1254,7 +1264,7 @@
         columns: (indent, 1fr, auto),
         gutter: 0.25em,
         prefix,
-        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body] #box(width: 1fr, it.fill)],
+        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body]],
         align(bottom)[#link(fig.location())[#context counter(page).at(fig.location()).first()]],
       )
     })
@@ -1284,7 +1294,7 @@
         columns: (indent, 1fr, auto),
         gutter: 0.25em,
         prefix,
-        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body] #box(width: 1fr, it.fill)],
+        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body]],
         align(bottom)[#link(fig.location())[#context counter(page).at(fig.location()).first()]],
       )
     })
@@ -1311,7 +1321,7 @@
         columns: (indent, 1fr, auto),
         gutter: 0.25em,
         prefix,
-        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body] #box(width: 1fr, it.fill)],
+        [#set par(hanging-indent: 0pt); #link(fig.location())[#fig.caption.body]],
         align(bottom)[#link(fig.location())[#context counter(page).at(fig.location()).first()]],
       )
     })
