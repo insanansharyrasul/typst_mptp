@@ -39,18 +39,34 @@ proyek-skripsi/
 #import "lib/format_ppki.typ": *
 ```
 
-### 3. Aktifkan format PPKI
+### 3. Definisikan variabel global (direkomendasikan)
+
+Karena judul, nama, NIM, dll. diulang di banyak halaman, definisikan sekali di atas file:
+
+```typst
+#let judul_indonesia = "Judul Karya Ilmiah Anda"
+#let judul_english   = "Title of Thesis"
+#let nim             = "NXXXXXXXXX"
+#let nama-penulis    = "Nama Lengkap Penulis"
+#let program-studi   = "Nama Program Studi"
+#let fakultas        = "Nama Fakultas"
+
+#let date  = datetime(year: 2024, month: 1, day: 15)
+#let bulan = bulan-id.at(date.month() - 1)  // "Januari"
+```
+
+### 4. Aktifkan format PPKI
 
 ```typst
 #show: ppki.with(
-  judul:         "Judul Karya Ilmiah Anda",
-  nama-penulis:  "Nama Lengkap Penulis",
-  nim:           "NXXXXXXXXX",
+  judul:         judul_indonesia,
+  nama-penulis:  nama-penulis,
+  nim:           nim,
   jenis-karya:   "skripsi",          // "laporan-akhir" | "skripsi" | "tesis" | "disertasi"
-  program-studi: "Nama Program Studi",
-  departemen:    "Nama Departemen",  // kosongkan ("") jika tidak ada
-  fakultas:      "Nama Fakultas",
-  tahun:         "2024",
+  program-studi: program-studi,
+  departemen:    "",                 // kosongkan ("") jika tidak ada departemen
+  fakultas:      fakultas,
+  tahun:         date.year(),        // int atau string, mis. 2024 atau "2024"
 )
 ```
 
@@ -58,115 +74,148 @@ proyek-skripsi/
 
 ## Struktur Dokumen
 
-Dokumen PPKI terdiri atas dua bagian utama dengan sistem penomoran halaman berbeda:
+Dokumen PPKI terdiri atas tiga fase penomoran halaman:
 
 ```
-Bagian Awal  → nomor halaman Romawi kecil: i, ii, iii, …
-Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
+Pra-Bagian Awal  → tanpa nomor halaman (sampul, judul, pernyataan)
+Bagian Awal      → nomor halaman Romawi kecil: i, ii, iii, …
+Bagian Isi       → nomor halaman Arab: 1, 2, 3, …
 ```
 
-### Urutan Halaman Bagian Awal (PPKI Bab III)
+### Urutan Halaman (PPKI Bab III)
+
+**Pra-Bagian Awal** — letakkan *sebelum* `#show: bagian-awal` (tanpa nomor halaman):
 
 | Urutan | Halaman                        | Fungsi                       |
 | ------ | ------------------------------ | ---------------------------- |
 | 1      | Halaman sampul                 | `#halaman-sampul(...)`       |
-| 2      | Pernyataan keaslian            | `#halaman-pernyataan(...)`   |
-| 3      | Abstrak (Indonesia)            | `#abstrak(...)`              |
-| 4      | Abstract (Inggris)             | `#abstract-en(...)`          |
-| 5      | Halaman hak cipta              | `#halaman-hak-cipta(...)`    |
-| 6      | Halaman judul dalam            | `#halaman-judul-dalam(...)`  |
-| 7      | Halaman penguji                | `#halaman-penguji(...)`      |
-| 8      | Lembar pengesahan              | `#lembar-pengesahan(...)`    |
-| 9      | Prakata                        | `#prakata[...]`              |
-| 10     | Daftar isi                     | `#daftar-isi()`              |
-| 11     | Daftar tabel (jika tabel > 1)  | `#daftar-tabel()`            |
-| 12     | Daftar gambar (jika gambar > 1)| `#daftar-gambar()`           |
-| 13     | Daftar lampiran (jika ada)     | `#daftar-lampiran()`         |
+| 2      | Halaman judul (salinan putih)  | `#halaman-judul(...)`        |
+| 3      | Pernyataan keaslian            | `#halaman-pernyataan(...)`   |
+
+**Bagian Awal** — aktifkan dengan `#show: bagian-awal` (nomor Romawi):
+
+| Urutan | Halaman                        | Fungsi                       |
+| ------ | ------------------------------ | ---------------------------- |
+| 4      | Abstrak (Indonesia)            | `#abstrak(...)`              |
+| 5      | Abstract (Inggris)             | `#abstract-en(...)`          |
+| 6      | Halaman hak cipta              | `#halaman-hak-cipta(...)`    |
+| 7      | Halaman judul dalam            | `#halaman-judul-dalam(...)`  |
+| 8      | Halaman penguji                | `#halaman-penguji(...)`      |
+| 9      | Lembar pengesahan              | `#lembar-pengesahan(...)`    |
+| 10     | Prakata                        | `#prakata[...]`              |
+| 11     | Daftar isi                     | `#daftar-isi()`              |
+| 12     | Daftar tabel (jika tabel > 1)  | `#daftar-tabel()`            |
+| 13     | Daftar gambar (jika gambar > 1)| `#daftar-gambar()`           |
+| 14     | Daftar lampiran (jika ada)     | `#daftar-lampiran()`         |
 
 ### Contoh Lengkap
 
 ```typst
 #import "lib/format_ppki.typ": *
 
+// ── VARIABEL GLOBAL ────────────────────────────────────────────
+#let judul_indonesia = "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi"
+#let judul_english   = "Effect of Organic Fertilizer on Rice Growth"
+#let nim             = "A1234567"
+#let nama-penulis    = "Budi Santoso"
+#let program-studi   = "Agronomi dan Hortikultura"
+#let fakultas        = "Fakultas Pertanian"
+
+#let date  = datetime(year: 2024, month: 1, day: 15)
+#let bulan = bulan-id.at(date.month() - 1)  // "Januari"
+
+// ── FORMAT PPKI ────────────────────────────────────────────────
 #show: ppki.with(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama-penulis:  "Budi Santoso",
-  nim:           "A1234567",
+  judul:         judul_indonesia,
+  nama-penulis:  nama-penulis,
+  nim:           nim,
   jenis-karya:   "skripsi",
-  program-studi: "Agronomi dan Hortikultura",
-  departemen:    "Agronomi dan Hortikultura",
-  fakultas:      "Fakultas Pertanian",
-  tahun:         "2024",
+  program-studi: program-studi,
+  departemen:    "",              // kosongkan jika tidak ada departemen
+  fakultas:      fakultas,
+  tahun:         date.year(),
 )
 
-// ── BAGIAN AWAL ──────────────────────────────────────────────
-#show: bagian-awal
-
+// ── PRA-BAGIAN AWAL (tanpa nomor halaman) ─────────────────────
 #halaman-sampul(
-  judul:         "PENGARUH PUPUK ORGANIK TERHADAP PERTUMBUHAN PADI",
-  nama:          "BUDI SANTOSO",
-  nim:           "A1234567",
-  program-studi: "AGRONOMI DAN HORTIKULTURA",
-  departemen:    "AGRONOMI DAN HORTIKULTURA",
-  fakultas:      "Fakultas Pertanian",
-  tahun:         "2024",
+  judul:         judul_indonesia,
+  nama:          nama-penulis,
+  nim:           nim,
+  program-studi: program-studi,
+  fakultas:      fakultas,
+  tahun:         date.year(),
   logo:          image("assets/logo-ipb.png", width: 2.5cm),
 )
 
-#halaman-pernyataan(
-  nama:        "BUDI SANTOSO",
-  nim:         "A1234567",
-  judul:       "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  jenis-karya: "skripsi",
-  tanggal:     "Bogor, Januari 2024",
+#halaman-judul(
+  judul:         judul_indonesia,
+  nama:          nama-penulis,
+  nim:           nim,
+  program-studi: program-studi,
+  fakultas:      fakultas,
+  tahun:         date.year(),
 )
 
+#halaman-pernyataan(
+  nama-penulis: nama-penulis,
+  nim:          nim,
+  judul:        judul_indonesia,
+  jenis-karya:  "skripsi",
+  tanggal:      [Bogor, #bulan #date.year()],
+)
+
+// ── BAGIAN AWAL (nomor halaman Romawi: i, ii, iii, …) ─────────
+#show: bagian-awal
+
 #abstrak(
-  nama:       "BUDI SANTOSO",
-  judul:      "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
+  nama:       nama-penulis,
+  judul:      judul_indonesia,
   pembimbing: ("Ahmad Rifai", "Siti Maryam"),
   isi:        [Narasi abstrak maks. 200 kata, satu paragraf. Memuat latar
                belakang, tujuan, metode, hasil, dan implikasi.],
-  kata-kunci: "kata1, kata2, kata3",  // maks. 5, terurut abjad
+  kata-kunci: [kata1, kata2, kata3],   // gunakan [...] agar bisa dicetak miring; maks. 5, terurut abjad
 )
 
 #abstract-en(
-  nama:       "BUDI SANTOSO",
-  judul:      "Effect of Organic Fertilizer on Rice Growth",
+  nama:       nama-penulis,
+  judul:      judul_english,
   pembimbing: ("Ahmad Rifai", "Siti Maryam"),
   isi:        [Abstract narrative, max 200 words, one paragraph.],
-  keywords:   "keyword1, keyword2, keyword3",
+  keywords:   [keyword1, keyword2, keyword3],
 )
 
-#halaman-hak-cipta(tahun: "2024")
+#halaman-hak-cipta(tahun: date.year())
 
 #halaman-judul-dalam(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama:          "BUDI SANTOSO",
-  nim:           "A1234567",
+  judul:         judul_indonesia,
+  nama:          nama-penulis,
+  nim:           nim,
   jenis-karya:   "skripsi",
-  program-studi: "AGRONOMI DAN HORTIKULTURA",
-  departemen:    "AGRONOMI DAN HORTIKULTURA",
-  fakultas:      "Fakultas Pertanian",
-  tahun:         "2024",
+  program-studi: program-studi,
+  fakultas:      fakultas,
+  tahun:         date.year(),
 )
 
 #halaman-penguji(
-  penguji: ("Dr. Nama Penguji, M.Si.", "Dr. Nama Penguji 2, M.Si."),
+  penguji: "Dr. Nama Penguji, M.Si.",  // satu string, atau tuple ("Dr. A", "Dr. B") jika lebih dari satu
   judul:   "Tim Penguji pada Ujian Skripsi:",
 )
 
 #lembar-pengesahan(
-  judul:         "Pengaruh Pupuk Organik terhadap Pertumbuhan Padi",
-  nama:          "Budi Santoso",
-  nim:           "A1234567",
+  judul:         judul_indonesia,
+  nama-penulis:  nama-penulis,
+  nim:           nim,
   jenis-karya:   "skripsi",
-  program-studi: "Agronomi dan Hortikultura",
+  program-studi: program-studi,
   pembimbing:    ("Dr. Ahmad Rifai, M.Si.", "Dr. Siti Maryam, M.Sc."),
   ketua:         "Prof. Dr. Ketua Program Studi, M.Si.",
   ketua-label:   "Ketua Program Studi Agronomi dan Hortikultura:",
-  tanggal-ujian: "1 Januari 2024",
-  tanggal-lulus: "15 Januari 2024",
+  ketua-nip:     "19XX0101 XXXXXXX X XXX",             // opsional
+  dekan:         "Prof. Dr. Ketua Departemen, M.Si.",  // opsional; tampil sebagai "Atau (pilih salah satu)"
+  dekan-label:   "Ketua Departemen Agronomi dan Hortikultura:",
+  dekan-nip:     "19XX0101 XXXXXXX X XXX",             // opsional
+  tanggal-ujian: [#bulan #date.year()],
+  tanggal-lulus: [#bulan #date.year()],
 )
 
 #prakata[
@@ -175,9 +224,9 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 
   #v(1em)
   #align(right)[
-    Bogor, Januari 2024
+    Bogor, #bulan #date.year()
     #v(2em)
-    _Budi Santoso_
+    _#nama-penulis_
   ]
 ]
 
@@ -186,7 +235,7 @@ Bagian Isi   → nomor halaman Arab: 1, 2, 3, …
 #daftar-gambar()   // hapus jika gambar ≤ 1
 #daftar-lampiran() // hapus jika tidak ada lampiran
 
-// ── BAGIAN ISI ───────────────────────────────────────────────
+// ── BAGIAN ISI (nomor halaman Arab: 1, 2, 3, …) ───────────────
 #show: bagian-isi
 
 = PENDAHULUAN
@@ -253,7 +302,8 @@ Paragraf pertama dimulai di sini …
 
 | Fungsi                         | Keterangan                      | Ref. PPKI        |
 | ------------------------------ | ------------------------------- | ---------------- |
-| `#halaman-sampul(...)`         | Halaman sampul                  | Lampiran 1b–1e   |
+| `#halaman-sampul(...)`         | Halaman sampul (dengan logo)    | Lampiran 1b–1e   |
+| `#halaman-judul(...)`          | Salinan sampul di kertas putih (tanpa logo) | PPKI 3.1.2 |
 | `#halaman-pernyataan(...)`     | Pernyataan keaslian & hak cipta | Lampiran 3       |
 | `#abstrak(...)`                | Abstrak bahasa Indonesia        | Lampiran 4a–4b   |
 | `#abstract-en(...)`            | Abstract bahasa Inggris         | Lampiran 4a–4b   |
@@ -281,9 +331,10 @@ Paragraf pertama dimulai di sini …
 
 ### Utilitas
 
-| Fungsi              | Keterangan                                             |
-| ------------------- | ------------------------------------------------------ |
-| `#bertingkat[...]`  | Paragraf bertingkat dengan indentasi +0,5 cm           |
+| Fungsi / Variabel      | Keterangan                                                      |
+| ---------------------- | --------------------------------------------------------------- |
+| `#bertingkat[...]`     | Paragraf bertingkat dengan indentasi +0,5 cm                    |
+| `bulan-id`             | Array nama bulan Indonesia: `("Januari", …, "Desember")`. Akses dengan `bulan-id.at(date.month() - 1)` |
 
 ---
 
@@ -410,11 +461,13 @@ Judul gambar diletakkan di bawah gambar secara otomatis.
 Typst menangani penomoran otomatis. Gunakan `=` untuk heading:
 
 ```typst
-= JUDUL BAB         // → I, II, III, … (kapital, tebal, centered)
+= JUDUL BAB           // → I, II, III, … (kapital, tebal, centered)
 
-== Judul Subbab     // → 1.1, 1.2, … (tebal, kiri)
+== Judul Subbab       // → 1.1, 1.2, … (tebal, kiri)
 
 === Judul Sub-subbab  // → 1.1.1, 1.1.2, … (regular, kiri)
+
+==== Judul Tingkat 4  // → 1.1.1.1, … (regular, kiri) — tidak disarankan (PPKI Lampiran 17)
 ```
 
 Rincian dalam subbab menggunakan huruf (PPKI Lampiran 16 butir 8):
