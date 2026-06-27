@@ -1230,6 +1230,7 @@
   outline(
     title: none,
     indent: 1cm,
+    depth: 2
   )
 }
 
